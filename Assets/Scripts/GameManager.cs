@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public BoardItem pit;
     public BoardItem wall;
     public BoardItem fence;
+    public BoardItem bomb;
 
     // Start is called before the first frame update
     void Start()
@@ -38,7 +39,19 @@ public class GameManager : MonoBehaviour
 
         PlaceBoardItem(player, 4, 4);
         PlaceBoardItem(robot, 8, 4);
-        PlaceBoardItem(pit, 6, 4);
+
+        PlaceBoardItem(wall, 3, 3);
+        PlaceBoardItem(wall, 4, 3);
+        PlaceBoardItem(wall, 5, 3);
+
+        //PlaceBoardItem(wall, 3, 4);
+        PlaceBoardItem(wall, 5, 4);
+
+        PlaceBoardItem(wall, 3, 5);
+        PlaceBoardItem(wall, 4, 5);
+        PlaceBoardItem(wall, 5, 5);
+
+        //PlaceBoardItem(pit, 6, 4);
 
         PrintBoard();
     }
@@ -68,6 +81,53 @@ public class GameManager : MonoBehaviour
     public void ClearPosition(int x, int y)
     {
         gameBoard[x, y] = null;
+    }
+
+    //Spawn Bomb powerups at 3x3 grid around player's position
+    public void SpawnBomb(int x, int y)
+    {
+        //Top-left
+        if (x - 1 >= 0 && y - 1 >= 0 && CheckIfEmpty(x - 1, y - 1) == 1)
+        {
+            PlaceBoardItem(bomb, x - 1, y - 1);
+        }
+        //Top-middle
+        if (y - 1 >= 0 && CheckIfEmpty(x, y - 1) == 1)
+        {
+            PlaceBoardItem(bomb, x, y - 1);
+        }
+        //Top-right
+        if (x + 1 <= gameBoard.GetLength(0) - 1 && y - 1 >= 0 && CheckIfEmpty(x + 1, y - 1) == 1)
+        {
+            PlaceBoardItem(bomb, x + 1, y - 1);
+        }
+        //Middle-Left
+        if (x - 1 >= 0 && CheckIfEmpty(x - 1, y) == 1)
+        {
+            PlaceBoardItem(bomb, x - 1, y);
+        }
+        //Middle-Middle
+        //PlaceBoardItem(bomb, x, y);   //Dont place it on player idk depends on what we wanna do
+        //Middle-Right
+        if (x + 1 <= gameBoard.GetLength(0) - 1 && CheckIfEmpty(x + 1, y) == 1)
+        {
+            PlaceBoardItem(bomb, x + 1, y);
+        }
+        //Bottom-Left
+        if (x - 1 >= 0 && y + 1 <= gameBoard.GetLength(1) - 1 && CheckIfEmpty(x - 1, y + 1) == 1)
+        {
+            PlaceBoardItem(bomb, x - 1, y + 1);
+        }
+        //Bottom-Middle
+        if (y + 1 <= gameBoard.GetLength(1) - 1 && CheckIfEmpty(x, y + 1) == 1)
+        {
+            PlaceBoardItem(bomb, x, y + 1);
+        }
+        //Bottom-Right
+        if (x + 1 <= gameBoard.GetLength(0) - 1 && y + 1 <= gameBoard.GetLength(1) - 1 && CheckIfEmpty(x + 1, y + 1) == 1)
+        {
+            PlaceBoardItem(bomb, x + 1, y + 1);
+        }
     }
 
     //Check indicated move position for obstacles and react accordingly 
@@ -113,7 +173,7 @@ public class GameManager : MonoBehaviour
                 return 0;
             }
             //If moving into a Pit: die
-            else if (gameBoard[item2X, item2Y] is Pit)
+            else if (gameBoard[item2X, item2Y] is Pit || gameBoard[item2X, item2Y] is Bomb)
             {
                 return 2;
             }
@@ -133,6 +193,35 @@ public class GameManager : MonoBehaviour
             }
         }
         //No obstacle to collide with, so move along
+        return 1;
+    }
+
+    //Check if the indicated position is empty (for bombs)
+    //  0 == not empty
+    //  1 == empty or robot
+    public int CheckIfEmpty(int x, int y)
+    {
+        if (gameBoard[x, y] is Wall)
+        {
+            return 0;
+        }
+        else if (gameBoard[x, y] is Pit)
+        {
+            return 0;
+        }
+        else if (gameBoard[x, y] is ElectricFence)
+        {
+            return 0;
+        }
+        else if (gameBoard[x, y] is Player)
+        {
+            return 0;
+        }
+        //If spawned on robot, destroy it
+        else if (gameBoard[x, y] is Robot)
+        {
+            gameBoard[x, y].DestroyItem();
+        }
         return 1;
     }
 

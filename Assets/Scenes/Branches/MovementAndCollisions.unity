@@ -278,6 +278,7 @@ MonoBehaviour:
   pit: {fileID: -7310905713946432797, guid: d7b18c3724c56b349a2362ed823a946d, type: 3}
   wall: {fileID: 3801018811010553056, guid: 5019f1618129c43469e73f31a3ae609f, type: 3}
   fence: {fileID: 3792249906083873543, guid: 0c435c61492cf004980bc81274bb989c, type: 3}
+  bomb: {fileID: 4814295573640927637, guid: ee16bc2ee2cbba641844fc8d0e20c7b8, type: 3}
 --- !u!1 &1522726880
 GameObject:
   m_ObjectHideFlags: 0

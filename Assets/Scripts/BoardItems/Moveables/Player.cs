@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Player : Moveable
 {
+    private int bombCount = 1;
+
     void Start()
     {
-        
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -53,9 +55,25 @@ public class Player : Moveable
         {
             MoveItem(-1, -1);
         }
+
+        //Spawn Bomb on player's position
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            UseBomb();
+        }
     }
 
-    //Check level for any more robots
+    //Spawn Bomb on player's position
+    private void UseBomb()
+    {
+        //Check if player has any bombs left
+        if (bombCount > 0)
+        {
+            gameManager.SpawnBomb(xPos, yPos);
+        }
+    }
+
+    //Check level for any remaining robots
     private void CheckForRobots()
     {
         if (GameObject.FindGameObjectWithTag("Robot") == null)
