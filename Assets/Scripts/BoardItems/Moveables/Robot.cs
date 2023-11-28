@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Robot : Moveable
@@ -13,7 +14,7 @@ public class Robot : Moveable
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        StartCoroutine(MoveRobot());
+        StartCoroutine(MoveRobotCoroutine());
     }
 
     // Update is called once per frame
@@ -23,7 +24,7 @@ public class Robot : Moveable
     }
 
     //Move Robot every X seconds
-    IEnumerator MoveRobot()
+    IEnumerator MoveRobotCoroutine()
     {
         while (true)
         {
@@ -36,49 +37,81 @@ public class Robot : Moveable
             //If player no longer exists, stop moving
             else
             {
-                StopCoroutine(MoveRobot());
+                StopCoroutine(MoveRobotCoroutine());
             }
         }
     }
-
-    //Algorithm could be changed to prioritize direction furthest from player instead of X first
-    //Or make it choose X or Y first randomly 
 
     //Find path directly towards player
     private void FindMoveDirection()
     {
         Vector3 originalPos = transform.position;
-        //Try moving on X-axis first
-        xDistance = player.transform.position.x - transform.position.x;
-        //Correct xDistance because sometimes it becomes 0.000000000000000001 and stops working
+
+        //Get X and Y distances from player
+        xDistance = (int)(player.transform.position.x - transform.position.x);
+        yDistance = (int)(player.transform.position.y - transform.position.y);
+        //Correct distances because sometimes they become 0.000000000000000001 because floats
         if ((xDistance > 0 && xDistance < 1) || (xDistance < 0 && xDistance > -1))
         {
             xDistance = 0;
         }
+        if ((yDistance > 0 && yDistance < 1) || (yDistance < 0 && yDistance > -1))
+        {
+            yDistance = 0;
+        }
+        //If X distance is greater, try moving on X first
+        if (Mathf.Abs(xDistance) > Mathf.Abs(yDistance))
+        {
+            MoveRobotX();
+        }
+        //Else if Y distance is greater, try moving on Y first
+        else if (Mathf.Abs(yDistance) > Mathf.Abs(xDistance))
+        {
+            MoveRobotY();
+        }
+        //Else if equal distances or didn't move, try moving on X again first
+        if (transform.position == originalPos)
+        {
+            MoveRobotX();
+        }
+        //If still hasn't moved, try moving on Y again
+        if (transform.position == originalPos)
+        {
+            MoveRobotY();
+        }
+
+        //Update distance again for testing purposes
+        //xDistance = player.transform.position.x - transform.position.x;
+        //yDistance = player.transform.position.y - transform.position.y;
+    }
+
+    //Move Robot one space toward player on x axis
+    private void MoveRobotX()
+    {
         if (xDistance > 0)
         {
             MoveItem(1, 0);
+            return;
         }
         else if (xDistance < 0)
         {
             MoveItem(-1, 0);
+            return;
         }
-        //Try moving on Y-axis next if haven't moved yet
-        if (originalPos == transform.position)
+    }
+
+    //Move Robot one space toward player on x axis
+    private void MoveRobotY()
+    {
+        if (yDistance > 0)
         {
-            yDistance = player.transform.position.y - transform.position.y;
-            if ((yDistance > 0 && yDistance < 1) || (yDistance < 0 && yDistance > -1))
-            {
-                yDistance = 0;
-            }
-            if (yDistance > 0)
-            {
-                MoveItem(0, -1);
-            }
-            else if (yDistance < 0)
-            {
-                MoveItem(0, 1);
-            }
+            MoveItem(0, -1);
+            return;
+        }
+        else if (yDistance < 0)
+        {
+            MoveItem(0, 1);
+            return;
         }
     }
 }

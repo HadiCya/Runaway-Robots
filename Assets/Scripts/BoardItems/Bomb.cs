@@ -10,12 +10,7 @@ public class Bomb : BoardItem
     // Start is called before the first frame update
     void Start()
     {
-        //NOTES
-        // Attempts to spawn 8 bombs around player
-        // Will not spawn bomb if space is occupied (wall, pit, electric fence, player)
-        //  because it would override other item and i figured this was easier than setting the
-        //  item back every time also player would be able to walk over bomb space whilst 
-        //  exploding unless we decide to disable movement until bomb is gone
+
     }
 
     // Update is called once per frame

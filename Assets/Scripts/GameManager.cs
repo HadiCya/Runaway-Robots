@@ -21,38 +21,23 @@ public class GameManager : MonoBehaviour
     {
         gameBoard = new BoardItem[9, 9];
         //Place a whole bunch of items
+        PlaceBoardItem(player, 0, 8);
 
-        /*
-        PlaceBoardItem(player, 4, 4);
-        PlaceBoardItem(robot, 8, 4);
-        //PlaceBoardItem(robot, 0, 4);
-        PlaceBoardItem(pit, 0, 0);
-        PlaceBoardItem(pit, 7, 6);
-        PlaceBoardItem(wall, 6, 4);
-        PlaceBoardItem(wall, 6, 3);
-        PlaceBoardItem(wall, 2, 2);
-        PlaceBoardItem(wall, 1, 3);
-        PlaceBoardItem(wall, 1, 4);
-        PlaceBoardItem(fence, 4, 5);
-        PlaceBoardItem(fence, 4, 6);
-        */
-
-        PlaceBoardItem(player, 4, 4);
-        PlaceBoardItem(robot, 8, 4);
+        PlaceBoardItem(robot, 8, 0);
 
         PlaceBoardItem(wall, 3, 3);
-        PlaceBoardItem(wall, 4, 3);
+        //PlaceBoardItem(wall, 4, 3);
         PlaceBoardItem(wall, 5, 3);
 
         //PlaceBoardItem(wall, 3, 4);
-        PlaceBoardItem(wall, 5, 4);
+        //PlaceBoardItem(wall, 5, 4);
 
         PlaceBoardItem(wall, 3, 5);
-        PlaceBoardItem(wall, 4, 5);
+        //PlaceBoardItem(wall, 4, 5);
         PlaceBoardItem(wall, 5, 5);
 
-        //PlaceBoardItem(pit, 6, 4);
-
+        PlaceBoardItem(pit, 4, 4);
+        
         PrintBoard();
     }
 
@@ -74,7 +59,7 @@ public class GameManager : MonoBehaviour
     public void UpdatePosition(BoardItem item)
     {
         gameBoard[item.xPos, item.yPos] = item;
-        PrintBoard();
+        //PrintBoard();
     }
 
     //Remove an item's location in the array (after being destroyed)
