@@ -27,9 +27,7 @@ public class BoardItem : MonoBehaviour
     {
         
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        Debug.Log("Destroying: " + name + " [" + xPos + "," + yPos + "]");
         gameManager.ClearPosition(xPos, yPos);
-        print(xPos + " " + yPos);
-        Destroy(gameObject);
+        Debug.Log("Destroying: " + name + " [" + xPos + "," + yPos + "]");
     }
 }
