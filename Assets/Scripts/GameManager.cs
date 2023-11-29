@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
         gameBoard = new BoardItem[9, 9];
         //Place a whole bunch of items
 
-        /*
+        
         PlaceBoardItem(player, 4, 4);
         PlaceBoardItem(robot, 8, 4);
         //PlaceBoardItem(robot, 0, 4);
@@ -34,10 +34,10 @@ public class GameManager : MonoBehaviour
         PlaceBoardItem(wall, 1, 4);
         PlaceBoardItem(fence, 4, 5);
         PlaceBoardItem(fence, 4, 6);
-        */
+        
 
-        PlaceBoardItem(player, 4, 4);
-        PlaceBoardItem(robot, 8, 4);
+        //PlaceBoardItem(player, 4, 4);
+        PlaceBoardItem(robot, 8, 5);
         PlaceBoardItem(pit, 6, 4);
 
         PrintBoard();
@@ -46,7 +46,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
     }
 
     //Place specified item at specified location on array and create object in scene
@@ -61,7 +60,7 @@ public class GameManager : MonoBehaviour
     public void UpdatePosition(BoardItem item)
     {
         gameBoard[item.xPos, item.yPos] = item;
-        PrintBoard();
+        //PrintBoard();
     }
 
     //Remove an item's location in the array (after being destroyed)
@@ -78,13 +77,14 @@ public class GameManager : MonoBehaviour
     //  4 = Destroy both item1 and item2
     public int CheckCollision(int item1X, int item1Y, int item2X, int item2Y)
     {
+        print("X1: " + item1X + " Y1: " + item1Y + " X2: " + item2X + " Y2: " + item2Y);
         //If out of bounds: don't move 
         if (item2X < 0 || item2X > gameBoard.GetLength(0) - 1 || item2Y < 0 || item2Y > gameBoard.GetLength(1) - 1)
         {
             return 0;
         }
         //If Player is trying to move:
-        if (gameBoard[item1X, item1Y] is Player)
+        if (gameBoard[item1X, item1Y] is Player && !(gameBoard[item2X, item2Y] == null))
         {
             //If moving into a Wall: don't
             if (gameBoard[item2X, item2Y] is Wall)
@@ -94,6 +94,9 @@ public class GameManager : MonoBehaviour
             //If moving into a Robot or Pit: die
             else if ((gameBoard[item2X, item2Y] is Robot) || (gameBoard[item2X, item2Y] is Pit))
             {
+                print("Player hit bot: " + gameBoard[item2X, item2Y]);
+                print(gameBoard[item2X, item2Y] == null);
+                print(gameBoard[item2X, item2Y].GetType());
                 return 2;
             }
             //If moving into an Electric Fence: die and destroy the fence

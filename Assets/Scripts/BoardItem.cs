@@ -25,9 +25,11 @@ public class BoardItem : MonoBehaviour
     //Destroy this item when another item collides with it
     public void DestroyItem()
     {
-        Destroy(gameObject);
+        
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         Debug.Log("Destroying: " + name + " [" + xPos + "," + yPos + "]");
         gameManager.ClearPosition(xPos, yPos);
+        print(xPos + " " + yPos);
+        Destroy(gameObject);
     }
 }
