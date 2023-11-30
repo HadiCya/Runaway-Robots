@@ -30,7 +30,7 @@ public class Robot : Moveable
         {
             yield return new WaitForSeconds(moveInterval);
             //If player exists, move towards it
-            if (GameObject.FindGameObjectWithTag("Player"))
+            if (player = GameObject.FindGameObjectWithTag("Player"))
             {
                 FindMoveDirection();
             }

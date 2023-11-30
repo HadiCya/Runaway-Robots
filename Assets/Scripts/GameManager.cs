@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     public BoardItem fence;
     public BoardItem bomb;
 
+    private List<string> level_list;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,9 +39,68 @@ public class GameManager : MonoBehaviour
         PlaceBoardItem(wall, 5, 5);
 
         PlaceBoardItem(pit, 4, 4);
-        
+
+        PreSetLevels();
+
         PrintBoard();
     }
+
+    private void PreSetLevels() {
+        level_list = new List<string>();
+        // P = player  r = robot  w = wall  p = pit  f = fence
+        level_list.Add( "-----r---" +
+                        "--r---r--" +
+                        "---------" +
+                        "r---p----" +
+                        "---pPp---" +
+                        "----p----" +
+                        "------r--" +
+                        "--r------" +
+                        "---------");
+
+        level_list.Add( "--r-r----" +
+                        "---------" +
+                        "---------" +
+                        "---------" +
+                        "--p------" +
+                        "-----P---" +
+                        "---------" +
+                        "---------" +
+                        "---------");
+
+        level_list.Add( "--r-r-r--" +
+                        "---------" +
+                        "---------" +
+                        "---------" +
+                        "-------p-" +
+                        "-P-------" +
+                        "---------" +
+                        "---------" +
+                        "---------");
+
+        level_list.Add( "--r-r-r-r" +
+                        "---------" +
+                        "---------" +
+                        "---------" +
+                        "---p-----" +
+                        "---------" +
+                        "-----P---" +
+                        "---------" +
+                        "---------");
+
+        level_list.Add( "r-r-r-r-r" +
+                        "---------" +
+                        "---------" +
+                        "---------" +
+                        "----P----" +
+                        "---------" +
+                        "---------" +
+                        "--fffff--" +
+                        "---------");
+
+    }
+
+
 
     // Update is called once per frame
     void Update()
@@ -58,6 +119,7 @@ public class GameManager : MonoBehaviour
     public void UpdatePosition(BoardItem item)
     {
         gameBoard[item.xPos, item.yPos] = item;
+        CheckForRobots();
         //PrintBoard();
     }
 
@@ -192,26 +254,29 @@ public class GameManager : MonoBehaviour
     //  1 == empty or robot
     public int CheckIfEmpty(int x, int y)
     {
-        if (gameBoard[x, y].type == "wall")
+        if (!(gameBoard[x, y] == null))
         {
-            return 0;
-        }
-        else if (gameBoard[x, y].type == "pit")
-        {
-            return 0;
-        }
-        else if (gameBoard[x, y].type == "electric_fence")
-        {
-            return 0;
-        }
-        else if (gameBoard[x, y].type == "player")
-        {
-            return 0;
-        }
-        //If spawned on robot, destroy it
-        else if (gameBoard[x, y].type == "robot")
-        {
-            gameBoard[x, y].DestroyItem();
+            if (gameBoard[x, y].type == "wall")
+            {
+                return 0;
+            }
+            else if (gameBoard[x, y].type == "pit")
+            {
+                return 0;
+            }
+            else if (gameBoard[x, y].type == "electric_fence")
+            {
+                return 0;
+            }
+            else if (gameBoard[x, y].type == "player")
+            {
+                return 0;
+            }
+            //If spawned on robot, destroy it
+            else if (gameBoard[x, y].type == "robot")
+            {
+                gameBoard[x, y].DestroyItem();
+            }
         }
         return 1;
     }
@@ -236,4 +301,60 @@ public class GameManager : MonoBehaviour
         }
         Debug.Log(board);
     }
+
+    private void CheckForRobots()
+    {
+        if (GameObject.FindGameObjectWithTag("Robot") == null)
+        {
+            Debug.Log("All gone!");
+            LoadNextLevel();
+        }
+    }
+
+
+    private void StrToLevel(string my_str) {
+        int board_size = 9;
+        int counter = 0;
+
+        for (int i = 0; i < board_size; i++)
+        {
+            for (int j = 0; j < board_size; j++)
+            {
+                if (!(gameBoard[j, i] == null))
+                {
+                    gameBoard[j, i].DestroyItem();
+                }
+
+                if (my_str[counter] == 'w') {
+                    PlaceBoardItem(wall, j, i);
+                }
+                else if (my_str[counter] == 'p')
+                {
+                    PlaceBoardItem(pit, j, i);
+                }
+                else if (my_str[counter] == 'f')
+                {
+                    PlaceBoardItem(fence, j, i);
+                }
+                else if (my_str[counter] == 'r')
+                {
+                    PlaceBoardItem(robot, j, i);
+                }
+                else if (my_str[counter] == 'P')
+                {
+                    PlaceBoardItem(player, j, i);
+                }
+                counter += 1;
+            }
+        }
+
+
+    }
+
+    private void LoadNextLevel() {
+        string my_str = level_list[0];
+        level_list.RemoveAt(0);
+        StrToLevel(my_str);    
+    }
+
 }
