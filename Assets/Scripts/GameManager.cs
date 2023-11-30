@@ -17,11 +17,12 @@ public class GameManager : MonoBehaviour
     public BoardItem bomb;
 
     private List<string> level_list;
+    private int board_size = 9;
 
     // Start is called before the first frame update
     void Start()
     {
-        gameBoard = new BoardItem[9, 9];
+        gameBoard = new BoardItem[board_size, board_size];
         //Place a whole bunch of items
         PlaceBoardItem(player, 0, 8);
 
@@ -143,7 +144,7 @@ public class GameManager : MonoBehaviour
             PlaceBoardItem(bomb, x, y - 1);
         }
         //Top-right
-        if (x + 1 <= gameBoard.GetLength(0) - 1 && y - 1 >= 0 && CheckIfEmpty(x + 1, y - 1) == 1)
+        if (x + 1 <= board_size - 1 && y - 1 >= 0 && CheckIfEmpty(x + 1, y - 1) == 1)
         {
             PlaceBoardItem(bomb, x + 1, y - 1);
         }
@@ -155,22 +156,22 @@ public class GameManager : MonoBehaviour
         //Middle-Middle
         //PlaceBoardItem(bomb, x, y);   //Dont place it on player idk depends on what we wanna do
         //Middle-Right
-        if (x + 1 <= gameBoard.GetLength(0) - 1 && CheckIfEmpty(x + 1, y) == 1)
+        if (x + 1 <= board_size - 1 && CheckIfEmpty(x + 1, y) == 1)
         {
             PlaceBoardItem(bomb, x + 1, y);
         }
         //Bottom-Left
-        if (x - 1 >= 0 && y + 1 <= gameBoard.GetLength(1) - 1 && CheckIfEmpty(x - 1, y + 1) == 1)
+        if (x - 1 >= 0 && y + 1 <= board_size - 1 && CheckIfEmpty(x - 1, y + 1) == 1)
         {
             PlaceBoardItem(bomb, x - 1, y + 1);
         }
         //Bottom-Middle
-        if (y + 1 <= gameBoard.GetLength(1) - 1 && CheckIfEmpty(x, y + 1) == 1)
+        if (y + 1 <= board_size - 1 && CheckIfEmpty(x, y + 1) == 1)
         {
             PlaceBoardItem(bomb, x, y + 1);
         }
         //Bottom-Right
-        if (x + 1 <= gameBoard.GetLength(0) - 1 && y + 1 <= gameBoard.GetLength(1) - 1 && CheckIfEmpty(x + 1, y + 1) == 1)
+        if (x + 1 <= board_size - 1 && y + 1 <= board_size - 1 && CheckIfEmpty(x + 1, y + 1) == 1)
         {
             PlaceBoardItem(bomb, x + 1, y + 1);
         }
@@ -186,7 +187,7 @@ public class GameManager : MonoBehaviour
     {
         print("X1: " + item1X + " Y1: " + item1Y + " X2: " + item2X + " Y2: " + item2Y);
         //If out of bounds: don't move 
-        if (item2X < 0 || item2X > gameBoard.GetLength(0) - 1 || item2Y < 0 || item2Y > gameBoard.GetLength(1) - 1)
+        if (item2X < 0 || item2X > board_size - 1 || item2Y < 0 || item2Y > board_size - 1)
         {
             return 0;
         }
@@ -284,9 +285,9 @@ public class GameManager : MonoBehaviour
     private void PrintBoard()
     {
         string board = "";
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < board_size; i++)
         {
-            for (int e = 0; e < 9; e++)
+            for (int e = 0; e < board_size; e++)
             {
                 if (gameBoard[e, i] == null)
                 {
@@ -307,15 +308,14 @@ public class GameManager : MonoBehaviour
         if (GameObject.FindGameObjectWithTag("Robot") == null)
         {
             Debug.Log("All gone!");
-            LoadNextLevel();
+            GenerateLevel();
+            //LoadNextLevel();
         }
     }
 
 
     private void StrToLevel(string my_str) {
-        int board_size = 9;
         int counter = 0;
-
         for (int i = 0; i < board_size; i++)
         {
             for (int j = 0; j < board_size; j++)
@@ -357,4 +357,39 @@ public class GameManager : MonoBehaviour
         StrToLevel(my_str);    
     }
 
+    private void ClearBoard() {
+        for (int i = 0; i < board_size; i++) {
+            for (int j = 0; j < board_size; j++)
+            {
+                if (!(gameBoard[j, i] == null))
+                {
+                    gameBoard[j, i].DestroyItem();
+                }
+            }
+        }
+    }
+
+
+    private void GenerateLevel() {
+        ClearBoard();
+        PlaceItems(pit, 3);
+        PlaceItems(wall, 3);
+        PlaceItems(fence, 3);
+        PlaceItems(robot, 2);
+        PlaceItems(player, 1);
+    }
+
+    private void PlaceItems(BoardItem item, int count) {
+        int index = 0;
+        while (index < count)
+        {
+            int randrow = UnityEngine.Random.Range(1, board_size);
+            int randcol = UnityEngine.Random.Range(1, board_size);
+            if (gameBoard[randrow, randcol] == null)
+            {
+                PlaceBoardItem(item, randrow, randcol);
+                index++;
+            }
+        }
+    }
 }
