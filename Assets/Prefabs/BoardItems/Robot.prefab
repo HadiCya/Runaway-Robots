@@ -120,3 +120,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xPos: 8
   yPos: 4
+  type: robot

@@ -120,3 +120,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xPos: 1
   yPos: 4
+  type: wall

@@ -129,23 +129,26 @@ public class GameManager : MonoBehaviour
             return 0;
         }
         //If Player is trying to move:
-        if (gameBoard[item1X, item1Y] is Player && !(gameBoard[item2X, item2Y] == null))
+        if (gameBoard[item1X, item1Y] == null) {
+            print("Null tried to move!");
+            return 0;
+        }
+
+
+        if (gameBoard[item1X, item1Y].type == "player" && !(gameBoard[item2X, item2Y] == null))
         {
             //If moving into a Wall: don't
-            if (gameBoard[item2X, item2Y] is Wall)
+            if (gameBoard[item2X, item2Y].type == "wall")
             {
                 return 0;
             }
             //If moving into a Robot or Pit: die
-            else if ((gameBoard[item2X, item2Y] is Robot) || (gameBoard[item2X, item2Y] is Pit))
+            else if ((gameBoard[item2X, item2Y].type == "robot") || (gameBoard[item2X, item2Y].type == "pit"))
             {
-                print("Player hit bot: " + gameBoard[item2X, item2Y]);
-                print(gameBoard[item2X, item2Y] == null);
-                print(gameBoard[item2X, item2Y].GetType());
                 return 2;
             }
             //If moving into an Electric Fence: die and destroy the fence
-            else if (gameBoard[item2X, item2Y] is ElectricFence)
+            else if (gameBoard[item2X, item2Y].type == "electric_fence")
             {
                 //Destroy other item collided with
                 gameBoard[item2X, item2Y].DestroyItem();
@@ -153,27 +156,27 @@ public class GameManager : MonoBehaviour
             }
         }
         //If a Robot is trying to move:
-        else if (gameBoard[item1X, item1Y] is Robot)
+        else if (gameBoard[item1X, item1Y].type == "robot" && !(gameBoard[item2X, item2Y] == null))
         {
             //If moving into a Wall or another Robot: don't 
-            if (gameBoard[item2X, item2Y] is Wall || gameBoard[item2X, item2Y] is Robot)
+            if (gameBoard[item2X, item2Y].type == "wall" || gameBoard[item2X, item2Y].type == "robot")
             {
                 return 0;
             }
             //If moving into a Pit: die
-            else if (gameBoard[item2X, item2Y] is Pit || gameBoard[item2X, item2Y] is Bomb)
+            else if (gameBoard[item2X, item2Y].type == "pit" || gameBoard[item2X, item2Y].type == "bomb")
             {
                 return 2;
             }
             //If moving into the Player: kill them
-            else if (gameBoard[item2X, item2Y] is Player)
+            else if (gameBoard[item2X, item2Y].type == "player")
             {
                 //Destroy other item collided with
                 gameBoard[item2X, item2Y].DestroyItem();
                 return 3;
             }
             //If moving into an Electric Fence, die and destroy the fence
-            else if (gameBoard[item2X, item2Y] is ElectricFence)
+            else if (gameBoard[item2X, item2Y].type == "electric_fence")
             {
                 //Destroy other item collided with
                 gameBoard[item2X, item2Y].DestroyItem();
@@ -189,24 +192,24 @@ public class GameManager : MonoBehaviour
     //  1 == empty or robot
     public int CheckIfEmpty(int x, int y)
     {
-        if (gameBoard[x, y] is Wall)
+        if (gameBoard[x, y].type == "wall")
         {
             return 0;
         }
-        else if (gameBoard[x, y] is Pit)
+        else if (gameBoard[x, y].type == "pit")
         {
             return 0;
         }
-        else if (gameBoard[x, y] is ElectricFence)
+        else if (gameBoard[x, y].type == "electric_fence")
         {
             return 0;
         }
-        else if (gameBoard[x, y] is Player)
+        else if (gameBoard[x, y].type == "player")
         {
             return 0;
         }
         //If spawned on robot, destroy it
-        else if (gameBoard[x, y] is Robot)
+        else if (gameBoard[x, y].type == "robot")
         {
             gameBoard[x, y].DestroyItem();
         }

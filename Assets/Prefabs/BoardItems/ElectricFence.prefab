@@ -120,3 +120,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xPos: 4
   yPos: 6
+  type: electric_fence

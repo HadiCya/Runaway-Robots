@@ -120,3 +120,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xPos: 0
   yPos: 0
+  type: bomb
