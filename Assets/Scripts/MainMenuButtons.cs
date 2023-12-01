@@ -20,7 +20,7 @@ public class MainMenuButtons : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("MovementAndCollisions");
     }
 
     public void QuitGame()

@@ -90,13 +90,4 @@ public class Player : Moveable
         moveCooldown = moveInterval;
         gameManager.SpawnBomb(xPos, yPos);
     }
-
-    //Check level for any remaining robots
-    private void CheckForRobots()
-    {
-        if (GameObject.FindGameObjectWithTag("Robot") == null)
-        {
-            Debug.Log("All gone!");
-        }
-    }
 }

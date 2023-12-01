@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour
     private int board_size = 9;
 
     private int robotCount = 0;
+    public static int levelCount;
 
     //Bomb stuff
     public int bombCount = 0;
@@ -51,6 +53,8 @@ public class GameManager : MonoBehaviour
 
         PlaceBoardItem(pit, 4, 4);
 
+        PlaceBoardItem(pit, 6, 4);
+
         PreSetLevels();
 
         PrintBoard();
@@ -60,6 +64,7 @@ public class GameManager : MonoBehaviour
         AddBomb();
         bombCount = 10; //for testing
         robotCount = 0;
+        levelCount = 1;
     }
 
     private void PreSetLevels() {
@@ -254,6 +259,8 @@ public class GameManager : MonoBehaviour
             //If moving into a Robot or Pit: die
             else if ((gameBoard[item2X, item2Y].type == "robot") || (gameBoard[item2X, item2Y].type == "pit"))
             {
+                //End game
+                SceneManager.LoadScene("EndScreen");
                 return 2;
             }
             //If moving into an Electric Fence: die and destroy the fence
@@ -261,6 +268,8 @@ public class GameManager : MonoBehaviour
             {
                 //Destroy other item collided with
                 gameBoard[item2X, item2Y].DestroyItem();
+                //End game
+                SceneManager.LoadScene("EndScreen");
                 return 4;
             }
         }
@@ -282,6 +291,8 @@ public class GameManager : MonoBehaviour
             {
                 //Destroy other item collided with
                 gameBoard[item2X, item2Y].DestroyItem();
+                //End game
+                SceneManager.LoadScene("EndScreen");
                 return 3;
             }
             //If moving into an Electric Fence, die and destroy the fence
@@ -444,6 +455,8 @@ public class GameManager : MonoBehaviour
         PlaceItems(player, 1);
         //Bomb stuff
         AddBomb();
+        //Other
+        levelCount++;
     }
 
     private void PlaceItems(BoardItem item, int count) {

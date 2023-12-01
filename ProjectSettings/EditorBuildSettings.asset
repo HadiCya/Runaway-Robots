@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Branches/MainMenu.unity
     guid: 88b9a527d7e98034aaaf8974917a0fb9
+  - enabled: 1
+    path: Assets/Scenes/Branches/MovementAndCollisions.unity
+    guid: 84ea07b654f915e42855ebb4e16e23d8
+  - enabled: 1
+    path: Assets/Scenes/EndScreen.unity
+    guid: f4bcf2c0c05e3b740b9acd6eb6d26a6f
   m_configObjects: {}
