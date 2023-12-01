@@ -24,7 +24,7 @@ public class BoardItem : MonoBehaviour
     }
 
     //Destroy this item when another item collides with it
-    public void DestroyItem()
+    public virtual void DestroyItem()
     {
         
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();

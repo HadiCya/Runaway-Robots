@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -18,6 +19,15 @@ public class GameManager : MonoBehaviour
 
     private List<string> level_list;
     private int board_size = 9;
+
+    private int robotCount = 0;
+
+    //Bomb stuff
+    public int bombCount = 0;
+    private float bombCooldown = 0f;
+    private float bombInterval = 3f;
+    private UnityEngine.UI.Image bombUiImage;
+    private TextMeshProUGUI bombCountText;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +54,12 @@ public class GameManager : MonoBehaviour
         PreSetLevels();
 
         PrintBoard();
+
+        bombUiImage = GameObject.Find("Canvas").transform.GetChild(0).GetComponent<UnityEngine.UI.Image>();
+        bombCountText = GameObject.Find("Canvas").transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        AddBomb();
+        bombCount = 10; //for testing
+        robotCount = 0;
     }
 
     private void PreSetLevels() {
@@ -106,6 +122,15 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Bomb cooldown timer
+        if (bombCooldown > 0)
+        {
+            bombCooldown -= Time.deltaTime;
+        }
+        else if (bombCooldown <= 0 && bombCount > 0)
+        {
+            bombUiImage.color = Color.white;
+        }
     }
 
     //Place specified item at specified location on array and create object in scene
@@ -120,7 +145,7 @@ public class GameManager : MonoBehaviour
     public void UpdatePosition(BoardItem item)
     {
         gameBoard[item.xPos, item.yPos] = item;
-        CheckForRobots();
+        //CheckForRobots();
         //PrintBoard();
     }
 
@@ -175,6 +200,27 @@ public class GameManager : MonoBehaviour
         {
             PlaceBoardItem(bomb, x + 1, y + 1);
         }
+
+        bombCount--;
+        bombCountText.text = bombCount.ToString();
+        bombCooldown = bombInterval;
+        bombUiImage.color = Color.gray; //Gray out bomb button (make it look better later)
+        // *Disable bomb UI*
+    }
+
+    //Add bomb (for start of new level)
+    public void AddBomb()
+    {
+        bombCount++;
+        bombCooldown = 0;
+        bombUiImage.color = Color.white;
+        bombCountText.text = bombCount.ToString();
+        // *Enable bomb ui* 
+    }
+
+    public bool CanUseBomb()
+    {
+        return (bombCooldown <= 0 && bombCount > 0);
     }
 
     //Check indicated move position for obstacles and react accordingly 
@@ -185,7 +231,7 @@ public class GameManager : MonoBehaviour
     //  4 = Destroy both item1 and item2
     public int CheckCollision(int item1X, int item1Y, int item2X, int item2Y)
     {
-        print("X1: " + item1X + " Y1: " + item1Y + " X2: " + item2X + " Y2: " + item2Y);
+        //print("X1: " + item1X + " Y1: " + item1Y + " X2: " + item2X + " Y2: " + item2Y);
         //If out of bounds: don't move 
         if (item2X < 0 || item2X > board_size - 1 || item2Y < 0 || item2Y > board_size - 1)
         {
@@ -193,7 +239,7 @@ public class GameManager : MonoBehaviour
         }
         //If Player is trying to move:
         if (gameBoard[item1X, item1Y] == null) {
-            print("Null tried to move!");
+            //print("Null tried to move!");
             return 0;
         }
 
@@ -303,13 +349,31 @@ public class GameManager : MonoBehaviour
         Debug.Log(board);
     }
 
-    private void CheckForRobots()
+    //Wasn't working so is retired for now
+    public void CheckForRobots()
     {
-        if (GameObject.FindGameObjectWithTag("Robot") == null)
+        if (!GameObject.FindGameObjectWithTag("Robot"))
         {
             Debug.Log("All gone!");
             GenerateLevel();
             //LoadNextLevel();
+        }
+    }
+
+    //Add to robot count when robot is spawned
+    public void AddRobotCount()
+    {
+        robotCount++;
+    }
+
+    //Subtract from robot count when robot is destroyed and end level if no more robots
+    public void SubtractRobotCount()
+    {
+        robotCount--;
+        if (robotCount == 0)
+        {
+            Debug.Log("All gone!");
+            GenerateLevel();
         }
     }
 
@@ -371,12 +435,15 @@ public class GameManager : MonoBehaviour
 
 
     private void GenerateLevel() {
+        //Board stuff
         ClearBoard();
         PlaceItems(pit, 3);
         PlaceItems(wall, 3);
         PlaceItems(fence, 3);
         PlaceItems(robot, 2);
         PlaceItems(player, 1);
+        //Bomb stuff
+        AddBomb();
     }
 
     private void PlaceItems(BoardItem item, int count) {

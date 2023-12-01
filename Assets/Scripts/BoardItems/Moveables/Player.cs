@@ -9,24 +9,12 @@ using UnityEngine.UIElements;
 
 public class Player : Moveable
 {
-    private int bombCount = 0;
-    private float bombCooldown = 0f;
-    private float bombInterval = 3f;
-    private UnityEngine.UI.Image bombUiImage;
-    private TextMeshProUGUI bombCountText;
-
     private bool movementDisabled = false;
     private float moveCooldown = 0f;
     private float moveInterval = 0.5f;
 
     void Start()
     {
-        bombUiImage = GameObject.Find("Canvas").transform.GetChild(0).GetComponent<UnityEngine.UI.Image>();
-        bombCountText = GameObject.Find("Canvas").transform.GetChild(1).GetComponent<TextMeshProUGUI>();
-        AddBomb();
-        //for testing
-        bombCount = 99;
-        bombCountText.text = bombCount.ToString();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
@@ -79,19 +67,9 @@ public class Player : Moveable
         }
 
         //Spawn Bomb
-        if (Input.GetKeyDown(KeyCode.Space) && bombCooldown <= 0)
+        if (Input.GetKeyDown(KeyCode.Space) && gameManager.CanUseBomb())
         {
             UseBomb();
-        }
-        
-        //Bomb cooldown timer
-        if (bombCooldown > 0)
-        {
-            bombCooldown -= Time.deltaTime;
-        }
-        else if (bombCooldown <= 0 && bombCount > 0)
-        {
-            bombUiImage.color = Color.white;
         }
 
         //Movement cooldown timer
@@ -108,26 +86,9 @@ public class Player : Moveable
     //Spawn Bomb on player's position
     private void UseBomb()
     {
-        //Check if player has any bombs left
-        if (bombCount > 0)
-        {
-            movementDisabled = true;
-            bombCooldown = bombInterval;
-            moveCooldown = moveInterval;
-            gameManager.SpawnBomb(xPos, yPos);
-            bombCount--;
-            bombCountText.text = bombCount.ToString();
-            //Gray out bomb button (make it look better later)
-            bombUiImage.color = Color.gray;
-        }
-    }
-
-    //Add bomb (for start of new level)
-    public void AddBomb()
-    {
-        bombCount++;
-        bombUiImage.color = Color.white;
-        // *Enable bomb ui* 
+        movementDisabled = true;
+        moveCooldown = moveInterval;
+        gameManager.SpawnBomb(xPos, yPos);
     }
 
     //Check level for any remaining robots

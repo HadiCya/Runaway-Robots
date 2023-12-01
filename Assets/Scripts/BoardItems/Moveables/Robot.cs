@@ -15,6 +15,8 @@ public class Robot : Moveable
     {
         player = GameObject.FindGameObjectWithTag("Player");
         StartCoroutine(MoveRobotCoroutine());
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gameManager.AddRobotCount();
     }
 
     // Update is called once per frame
@@ -113,5 +115,11 @@ public class Robot : Moveable
             MoveItem(0, 1);
             return;
         }
+    }
+
+    public override void DestroyItem()
+    {
+        base.DestroyItem();
+        gameManager.SubtractRobotCount();
     }
 }
