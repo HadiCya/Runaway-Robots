@@ -17,6 +17,11 @@ public class Robot : Moveable
         StartCoroutine(MoveRobotCoroutine());
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         gameManager.AddRobotCount();
+        moveInterval = 0.5f - GameManager.levelCount * 0.015f;
+        if (moveInterval < 0.18f)
+        {
+            moveInterval = 0.18f;
+        }
     }
 
     // Update is called once per frame

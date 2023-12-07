@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -287,7 +287,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dcbe54b4da0bee04ba4f6015212c9b15, type: 2}
+  - {fileID: 2100000, guid: 17c845569cb1d2041b9da2d8b82e3a89, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -326,8 +326,8 @@ Transform:
   m_GameObject: {fileID: 909486022}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.70710677, z: -0.70710677, w: 0}
-  m_LocalPosition: {x: 4.44, y: -4.44, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 16.095, y: -16.095, z: 0}
+  m_LocalScale: {x: 3.33, y: 1, z: 3.33}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -450,6 +450,7 @@ MonoBehaviour:
   wall: {fileID: 3801018811010553056, guid: 5019f1618129c43469e73f31a3ae609f, type: 3}
   fence: {fileID: 3792249906083873543, guid: 0c435c61492cf004980bc81274bb989c, type: 3}
   bomb: {fileID: 4814295573640927637, guid: ee16bc2ee2cbba641844fc8d0e20c7b8, type: 3}
+  bombCount: 0
 --- !u!1 &1522726880
 GameObject:
   m_ObjectHideFlags: 0
@@ -739,7 +740,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 17
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -764,7 +765,7 @@ Transform:
   m_GameObject: {fileID: 1796912538}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.44, y: -4.44, z: -10}
+  m_LocalPosition: {x: 16, y: -16, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

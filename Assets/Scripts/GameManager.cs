@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     public BoardItem bomb;
 
     private List<string> level_list;
-    private int board_size = 9;
+    private int board_size = 30;
 
     private int robotCount = 0;
     public static int levelCount;
@@ -36,35 +36,18 @@ public class GameManager : MonoBehaviour
     {
         gameBoard = new BoardItem[board_size, board_size];
         //Place a whole bunch of items
-        PlaceBoardItem(player, 0, 8);
-
-        PlaceBoardItem(robot, 8, 0);
-
-        PlaceBoardItem(wall, 3, 3);
-        //PlaceBoardItem(wall, 4, 3);
-        PlaceBoardItem(wall, 5, 3);
-
-        //PlaceBoardItem(wall, 3, 4);
-        //PlaceBoardItem(wall, 5, 4);
-
-        PlaceBoardItem(wall, 3, 5);
-        //PlaceBoardItem(wall, 4, 5);
-        PlaceBoardItem(wall, 5, 5);
-
-        PlaceBoardItem(pit, 4, 4);
-
-        PlaceBoardItem(pit, 6, 4);
-
-        PreSetLevels();
+        
 
         PrintBoard();
-
+        
         bombUiImage = GameObject.Find("Canvas").transform.GetChild(0).GetComponent<UnityEngine.UI.Image>();
         bombCountText = GameObject.Find("Canvas").transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         AddBomb();
         bombCount = 10; //for testing
         robotCount = 0;
-        levelCount = 1;
+        levelCount = 0;
+        GenerateLevel();
+        
     }
 
     private void PreSetLevels() {
@@ -446,13 +429,20 @@ public class GameManager : MonoBehaviour
 
 
     private void GenerateLevel() {
+        //Difficutly stuff
+        int num_of_robots = levelCount + 1;
+        int num_of_fences = levelCount + 1;
+        int num_of_walls = (levelCount + 1) / 2;
+        int num_of_pits = (levelCount + 1) / 2;
         //Board stuff
+
         ClearBoard();
-        PlaceItems(pit, 3);
-        PlaceItems(wall, 3);
-        PlaceItems(fence, 3);
-        PlaceItems(robot, 2);
         PlaceItems(player, 1);
+        PlaceItems(pit, num_of_pits);
+        PlaceItems(wall, num_of_walls);
+        PlaceItems(fence, num_of_fences);
+        PlaceItems(robot, num_of_robots);
+        
         //Bomb stuff
         AddBomb();
         //Other
@@ -465,11 +455,28 @@ public class GameManager : MonoBehaviour
         {
             int randrow = UnityEngine.Random.Range(1, board_size);
             int randcol = UnityEngine.Random.Range(1, board_size);
-            if (gameBoard[randrow, randcol] == null)
+            if (gameBoard[randrow, randcol] == null && !PlayerInProximity(randrow, randcol, 3))
             {
                 PlaceBoardItem(item, randrow, randcol);
                 index++;
             }
         }
+    }
+
+    // Return True if the player is within range number of squares from the given cords. False otherwise
+    private bool PlayerInProximity(int x, int y, int range) {
+        for (int i = -range; i <= range; i++)
+        {
+            for (int j = -range; j <= range; j++)
+            {
+                if (x + i < board_size && x + i >= 0 && y + j < board_size && y + j >= 0) {
+                    if (gameBoard[x + i, y + j] != null && gameBoard[x + i, y + j].type == "player")
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
