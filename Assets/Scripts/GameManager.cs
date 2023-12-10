@@ -22,14 +22,18 @@ public class GameManager : MonoBehaviour
     private int board_size = 30;
 
     private int robotCount = 0;
+    public static int robotsDefeated;
     public static int levelCount;
 
     //Bomb stuff
-    public int bombCount = 0;
+    public static int bombCount = 0;
     private float bombCooldown = 0f;
     private float bombInterval = 3f;
     private UnityEngine.UI.Image bombUiImage;
     private TextMeshProUGUI bombCountText;
+    private TextMeshProUGUI levelCompleteText;
+
+    public bool playerMovementDisabled = false;
 
     // Start is called before the first frame update
     void Start()
@@ -42,9 +46,11 @@ public class GameManager : MonoBehaviour
         
         bombUiImage = GameObject.Find("Canvas").transform.GetChild(0).GetComponent<UnityEngine.UI.Image>();
         bombCountText = GameObject.Find("Canvas").transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        levelCompleteText = GameObject.Find("Canvas").transform.GetChild(2).GetComponent<TextMeshProUGUI>();
         AddBomb();
-        bombCount = 10; //for testing
+        bombCount = 0;
         robotCount = 0;
+        robotsDefeated = 0;
         levelCount = 0;
         GenerateLevel();
         
@@ -364,10 +370,13 @@ public class GameManager : MonoBehaviour
     public void SubtractRobotCount()
     {
         robotCount--;
+        robotsDefeated++;
         if (robotCount == 0)
         {
             Debug.Log("All gone!");
-            GenerateLevel();
+            playerMovementDisabled = true;
+            levelCompleteText.gameObject.SetActive(true);
+            Invoke(nameof(GenerateLevel), 1);
         }
     }
 
@@ -405,8 +414,6 @@ public class GameManager : MonoBehaviour
                 counter += 1;
             }
         }
-
-
     }
 
     private void LoadNextLevel() {
@@ -421,6 +428,7 @@ public class GameManager : MonoBehaviour
             {
                 if (!(gameBoard[j, i] == null))
                 {
+                    Debug.Log("Level end destroyed: " + gameBoard[j, i].type);
                     gameBoard[j, i].DestroyItem();
                 }
             }
@@ -435,7 +443,8 @@ public class GameManager : MonoBehaviour
         int num_of_walls = (levelCount + 1) / 2;
         int num_of_pits = (levelCount + 1) / 2;
         //Board stuff
-
+        playerMovementDisabled = false;
+        levelCompleteText.gameObject.SetActive(false);
         ClearBoard();
         PlaceItems(player, 1);
         PlaceItems(pit, num_of_pits);

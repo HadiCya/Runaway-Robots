@@ -21,6 +21,24 @@ public class Player : Moveable
     // Update is called once per frame
     void Update()
     {
+        if (!gameManager.playerMovementDisabled)
+        {
+            PlayerControls();
+        }
+
+        //Movement cooldown timer
+        if (moveCooldown > 0)
+        {
+            moveCooldown -= Time.deltaTime;
+        }
+        else if (moveCooldown <= 0 && movementDisabled)
+        {
+            movementDisabled = false;
+        }
+    }
+
+    private void PlayerControls()
+    {
         //Move player's icon in direction indicated by player
         if (!movementDisabled)
         {
@@ -70,16 +88,6 @@ public class Player : Moveable
         if (Input.GetKeyDown(KeyCode.Space) && gameManager.CanUseBomb())
         {
             UseBomb();
-        }
-
-        //Movement cooldown timer
-        if (moveCooldown > 0)
-        {
-            moveCooldown -= Time.deltaTime;
-        }
-        else if (moveCooldown <= 0 && movementDisabled)
-        {
-            movementDisabled = false;
         }
     }
 
