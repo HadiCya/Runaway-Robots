@@ -43,42 +43,42 @@ public class Player : Moveable
         if (!movementDisabled)
         {
             //Move up
-            if (Input.GetKeyDown(KeyCode.Keypad8))
+            if (Input.GetKeyDown(KeyCode.Keypad8) || Input.GetKeyDown(KeyCode.W))
             {
                 MoveItem(0, -1);
             }
             //Move up-right
-            else if (Input.GetKeyDown(KeyCode.Keypad9))
+            else if (Input.GetKeyDown(KeyCode.Keypad9) || Input.GetKeyDown(KeyCode.E))
             {
                 MoveItem(1, -1);
             }
             //Move right
-            else if (Input.GetKeyDown(KeyCode.Keypad6))
+            else if (Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.D))
             {
                 MoveItem(1, 0);
             }
             //Move down-right
-            else if (Input.GetKeyDown(KeyCode.Keypad3))
+            else if (Input.GetKeyDown(KeyCode.Keypad3) || Input.GetKeyDown(KeyCode.C))
             {
                 MoveItem(1, 1);
             }
             //Move down
-            else if (Input.GetKeyDown(KeyCode.Keypad2))
+            else if (Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.X))
             {
                 MoveItem(0, 1);
             }
             //Move down-left
-            else if (Input.GetKeyDown(KeyCode.Keypad1))
+            else if (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Z))
             {
                 MoveItem(-1, 1);
             }
             //Move left
-            else if (Input.GetKeyDown(KeyCode.Keypad4))
+            else if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.A))
             {
                 MoveItem(-1, 0);
             }
             //Move up-left
-            else if (Input.GetKeyDown(KeyCode.Keypad7))
+            else if (Input.GetKeyDown(KeyCode.Keypad7) || Input.GetKeyDown(KeyCode.Q))
             {
                 MoveItem(-1, -1);
             }

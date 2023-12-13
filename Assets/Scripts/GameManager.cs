@@ -294,13 +294,17 @@ public class GameManager : MonoBehaviour
             //If moving into an Electric Fence, die and destroy the fence
             else if (gameBoard[item2X, item2Y].type == "electric_fence")
             {
+                PlaySound(electricSound);
                 //Destroy other item collided with
                 gameBoard[item2X, item2Y].DestroyItem();
                 return 4;
             }
         }
+        else if (gameBoard[item1X, item1Y].type == "robot" && (gameBoard[item2X, item2Y] == null))
+        {
+            PlaySound(tickSound);
+        }
         //No obstacle to collide with, so move along
-        PlaySound(tickSound);
         return 1;
     }
 
