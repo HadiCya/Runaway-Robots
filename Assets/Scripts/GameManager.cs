@@ -35,6 +35,9 @@ public class GameManager : MonoBehaviour
 
     public bool playerMovementDisabled = false;
 
+    public AudioSource audioSource;
+    public AudioClip cancelSound, deathSound, electricSound, tickSound, bombSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -243,18 +246,21 @@ public class GameManager : MonoBehaviour
             //If moving into a Wall: don't
             if (gameBoard[item2X, item2Y].type == "wall")
             {
+                PlaySound(cancelSound);
                 return 0;
             }
             //If moving into a Robot or Pit: die
             else if ((gameBoard[item2X, item2Y].type == "robot") || (gameBoard[item2X, item2Y].type == "pit"))
             {
                 //End game
+                PlaySound(deathSound);
                 SceneManager.LoadScene("EndScreen");
                 return 2;
             }
             //If moving into an Electric Fence: die and destroy the fence
             else if (gameBoard[item2X, item2Y].type == "electric_fence")
             {
+                PlaySound(electricSound);
                 //Destroy other item collided with
                 gameBoard[item2X, item2Y].DestroyItem();
                 //End game
@@ -278,6 +284,7 @@ public class GameManager : MonoBehaviour
             //If moving into the Player: kill them
             else if (gameBoard[item2X, item2Y].type == "player")
             {
+                PlaySound(deathSound);
                 //Destroy other item collided with
                 gameBoard[item2X, item2Y].DestroyItem();
                 //End game
@@ -293,6 +300,7 @@ public class GameManager : MonoBehaviour
             }
         }
         //No obstacle to collide with, so move along
+        PlaySound(tickSound);
         return 1;
     }
 
@@ -301,6 +309,7 @@ public class GameManager : MonoBehaviour
     //  1 == empty or robot
     public int CheckIfEmpty(int x, int y)
     {
+        PlaySound(bombSound);
         if (!(gameBoard[x, y] == null))
         {
             if (gameBoard[x, y].type == "wall")
@@ -487,5 +496,11 @@ public class GameManager : MonoBehaviour
             }
         }
         return false;
+    }
+
+    void PlaySound(AudioClip clip)
+    {
+        audioSource.clip = clip;
+        audioSource.Play();
     }
 }
