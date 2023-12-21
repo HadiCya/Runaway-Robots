@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     public BoardItem bomb;
 
     private List<string> level_list;
-    private int board_size = 30;
+    private int board_size = 10;
 
     private int robotCount = 0;
     public static int robotsDefeated;
@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     //Bomb stuff
     public static int bombCount = 0;
     private float bombCooldown = 0f;
-    private float bombInterval = 3f;
+    private readonly float bombInterval = 3f;
     private UnityEngine.UI.Image bombUiImage;
     private TextMeshProUGUI bombCountText;
     private TextMeshProUGUI levelCompleteText;
@@ -38,13 +38,18 @@ public class GameManager : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip cancelSound, deathSound, electricSound, tickSound, bombSound;
 
+    //Board size stuff
+    public GameObject grid;
+    private readonly float gridPosAmount = 0.555f;
+    private readonly float gridScaleAmount = 0.111f;
+    public Camera cam;
+    private readonly float camPosAmount = 0.555f;
+    private readonly float camSizeAmount = 0.665f;
+
     // Start is called before the first frame update
     void Start()
     {
         gameBoard = new BoardItem[board_size, board_size];
-        //Place a whole bunch of items
-        
-
         PrintBoard();
         
         bombUiImage = GameObject.Find("Canvas").transform.GetChild(0).GetComponent<UnityEngine.UI.Image>();
@@ -56,7 +61,6 @@ public class GameManager : MonoBehaviour
         robotsDefeated = 0;
         levelCount = 0;
         GenerateLevel();
-        
     }
 
     private void PreSetLevels() {
@@ -232,15 +236,16 @@ public class GameManager : MonoBehaviour
         //If out of bounds: don't move 
         if (item2X < 0 || item2X > board_size - 1 || item2Y < 0 || item2Y > board_size - 1)
         {
+            PlaySound(cancelSound);
             return 0;
         }
-        //If Player is trying to move:
+        
         if (gameBoard[item1X, item1Y] == null) {
             //print("Null tried to move!");
             return 0;
         }
 
-
+        //If Player is trying to move:
         if (gameBoard[item1X, item1Y].type == "player" && !(gameBoard[item2X, item2Y] == null))
         {
             //If moving into a Wall: don't
@@ -254,17 +259,18 @@ public class GameManager : MonoBehaviour
             {
                 //End game
                 PlaySound(deathSound);
-                SceneManager.LoadScene("EndScreen");
+                Invoke(nameof(LoadEndScreen), 3.5f);
                 return 2;
             }
             //If moving into an Electric Fence: die and destroy the fence
             else if (gameBoard[item2X, item2Y].type == "electric_fence")
             {
                 PlaySound(electricSound);
+                PlaySound(deathSound);
                 //Destroy other item collided with
                 gameBoard[item2X, item2Y].DestroyItem();
                 //End game
-                SceneManager.LoadScene("EndScreen");
+                Invoke(nameof(LoadEndScreen), 3.5f);
                 return 4;
             }
         }
@@ -288,7 +294,7 @@ public class GameManager : MonoBehaviour
                 //Destroy other item collided with
                 gameBoard[item2X, item2Y].DestroyItem();
                 //End game
-                SceneManager.LoadScene("EndScreen");
+                Invoke(nameof(LoadEndScreen), 3.5f);
                 return 3;
             }
             //If moving into an Electric Fence, die and destroy the fence
@@ -448,8 +454,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     private void GenerateLevel() {
+        ClearBoard();
+        if (levelCount > 0)
+        {
+            ChangeBoardSize(1);
+        }
+
         //Difficutly stuff
         int num_of_robots = levelCount + 1;
         int num_of_fences = levelCount + 1;
@@ -458,7 +469,7 @@ public class GameManager : MonoBehaviour
         //Board stuff
         playerMovementDisabled = false;
         levelCompleteText.gameObject.SetActive(false);
-        ClearBoard();
+        
         PlaceItems(player, 1);
         PlaceItems(pit, num_of_pits);
         PlaceItems(wall, num_of_walls);
@@ -502,9 +513,31 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
+    //Increase/Decrease board size by specified amount
+    private void ChangeBoardSize(int amount)
+    {
+        //Increase board size and reset array
+        board_size += amount;
+        gameBoard = new BoardItem[board_size, board_size];
+
+        //Change gameboard object
+        grid.transform.position = new Vector3(grid.transform.position.x + (amount * gridPosAmount), grid.transform.position.y - (amount * gridPosAmount), 0);
+        grid.transform.localScale = new Vector3(grid.transform.localScale.x + (amount * gridScaleAmount), 1, grid.transform.localScale.z + (amount * gridScaleAmount));
+        grid.GetComponent<Renderer>().material.mainTextureScale = new Vector2(board_size, board_size);
+
+        //Move camera
+        cam.transform.position = new Vector3(cam.transform.position.x + (amount * camPosAmount), cam.transform.position.y - (amount * camPosAmount), cam.transform.position.z);
+        cam.orthographicSize += (amount * camSizeAmount);
+    }
+
     void PlaySound(AudioClip clip)
     {
         audioSource.clip = clip;
         audioSource.Play();
+    }
+
+    private void LoadEndScreen()
+    {
+        SceneManager.LoadScene("EndScreen");
     }
 }

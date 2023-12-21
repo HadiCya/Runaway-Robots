@@ -12,8 +12,7 @@ public class PauseMenuButtons : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        pauseMenu.SetActive(false);
-        isPaused = false;
+        UnpauseGame();
     }
 
     // Update is called once per frame

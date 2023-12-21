@@ -11,7 +11,7 @@ public class Player : Moveable
 {
     private bool movementDisabled = false;
     private float moveCooldown = 0f;
-    private float moveInterval = 0.5f;
+    private readonly float moveInterval = 0.5f;
 
     void Start()
     {
