@@ -259,7 +259,7 @@ public class GameManager : MonoBehaviour
             {
                 //End game
                 PlaySound(deathSound);
-                Invoke(nameof(LoadEndScreen), 3.5f);
+                Invoke(nameof(LoadEndScreen), 2);
                 return 2;
             }
             //If moving into an Electric Fence: die and destroy the fence
@@ -270,7 +270,7 @@ public class GameManager : MonoBehaviour
                 //Destroy other item collided with
                 gameBoard[item2X, item2Y].DestroyItem();
                 //End game
-                Invoke(nameof(LoadEndScreen), 3.5f);
+                Invoke(nameof(LoadEndScreen), 2);
                 return 4;
             }
         }
@@ -294,7 +294,7 @@ public class GameManager : MonoBehaviour
                 //Destroy other item collided with
                 gameBoard[item2X, item2Y].DestroyItem();
                 //End game
-                Invoke(nameof(LoadEndScreen), 3.5f);
+                Invoke(nameof(LoadEndScreen), 2);
                 return 3;
             }
             //If moving into an Electric Fence, die and destroy the fence
