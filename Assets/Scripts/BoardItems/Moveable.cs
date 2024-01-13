@@ -6,6 +6,7 @@ public class Moveable : BoardItem
 {
     protected float moveDistance = 1.11f;
     protected Vector2 moveDir;
+    protected int collisionResult;
 
     // Start is called before the first frame update
     void Start()
@@ -20,9 +21,8 @@ public class Moveable : BoardItem
     }
 
     //Move item in indicated direction and check for collisions 
-    protected void MoveItem(int xMove, int yMove)
+    protected virtual void MoveItem(int xMove, int yMove)
     {
-        int collisionResult;
         int xNew = xPos;
         int yNew = yPos;
         //Determine new position in array to move item

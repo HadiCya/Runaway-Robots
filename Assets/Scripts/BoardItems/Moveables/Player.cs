@@ -5,6 +5,7 @@ using System.Diagnostics.Tracing;
 using TMPro;
 using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
@@ -20,21 +21,28 @@ public class Player : Moveable
     private float swipeX, swipeY;
     private string direction;
     //maybe make adjustable in settings?
-    private float swipeXThreshold = 15;
-    private float swipeYThreshold = 30;
+    private readonly float swipeXThreshold = 15;
+    private readonly float swipeYThreshold = 30;
+
+    //Joystick stuff
+    private PlayerJoystick playerJoystick;
 
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        playerJoystick = new PlayerJoystick();
+        playerJoystick.Enable();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!gameManager.playerMovementDisabled)
+        if (!gameManager.playerMovementDisabled && !movementDisabled)
         {
             KeyBoardControls();
-            TouchControls();
+            //TouchControls();
+            JoystickControls();
+            UseBomb();
         }
 
         //Movement cooldown timer
@@ -94,27 +102,21 @@ public class Player : Moveable
                 MoveItem(-1, -1);
             }
         }
-
-        //Spawn Bomb
-        if (Input.GetKeyDown(KeyCode.Space) && gameManager.CanUseBomb())
-        {
-            UseBomb();
-        }
     }
 
     private void TouchControls()
     {
-        if (Input.touchCount > 0)
+        if (Input.touchCount > 0 && !movementDisabled)
         {
             playerTouch = Input.GetTouch(0);
 
             //Get position of touch start
-            if (playerTouch.phase == TouchPhase.Began)
+            if (playerTouch.phase == UnityEngine.TouchPhase.Began)
             {
                 touchStartPosition = playerTouch.position;
             }
 
-            else if (playerTouch.phase == TouchPhase.Ended)
+            else if (playerTouch.phase == UnityEngine.TouchPhase.Ended)
             {
                 touchEndPosition = playerTouch.position;
 
@@ -139,59 +141,117 @@ public class Player : Moveable
                 }
                 print("X: " + swipeX + "   Y: " + swipeY + "    Dir: " + direction);
 
-                //Move player's icon in direction indicated by player
-                if (!movementDisabled)
+                //Move up
+                if (direction == "Up")
                 {
-                    //Move up
-                    if (direction == "Up")
-                    {
-                        MoveItem(0, -1);
-                    }
-                    //Move up-right
-                    else if (direction == "UpRight")
-                    {
-                        MoveItem(1, -1);
-                    }
-                    //Move right
-                    else if (direction == "Right")
-                    {
-                        MoveItem(1, 0);
-                    }
-                    //Move down-right
-                    else if (direction == "DownRight")
-                    {
-                        MoveItem(1, 1);
-                    }
-                    //Move down
-                    else if (direction == "Down")
-                    {
-                        MoveItem(0, 1);
-                    }
-                    //Move down-left
-                    else if (direction == "DownLeft")
-                    {
-                        MoveItem(-1, 1);
-                    }
-                    //Move left
-                    else if (direction == "Left")
-                    {
-                        MoveItem(-1, 0);
-                    }
-                    //Move up-left
-                    else if (direction == "UpLeft")
-                    {
-                        MoveItem(-1, -1);
-                    }
+                    MoveItem(0, -1);
+                }
+                //Move up-right
+                else if (direction == "UpRight")
+                {
+                    MoveItem(1, -1);
+                }
+                //Move right
+                else if (direction == "Right")
+                {
+                    MoveItem(1, 0);
+                }
+                //Move down-right
+                else if (direction == "DownRight")
+                {
+                    MoveItem(1, 1);
+                }
+                //Move down
+                else if (direction == "Down")
+                {
+                    MoveItem(0, 1);
+                }
+                //Move down-left
+                else if (direction == "DownLeft")
+                {
+                    MoveItem(-1, 1);
+                }
+                //Move left
+                else if (direction == "Left")
+                {
+                    MoveItem(-1, 0);
+                }
+                //Move up-left
+                else if (direction == "UpLeft")
+                {
+                    MoveItem(-1, -1);
                 }
             }
+        }
+    }
+
+    private void JoystickControls()
+    {
+        Vector2 joystickMovement = playerJoystick.Player.Move.ReadValue<Vector2>();
+
+        //Move up
+        //unit circle??????
+        if (joystickMovement.x > -0.4 && joystickMovement.x < 0.4 && joystickMovement.y > 0)
+        {
+            MoveItem(0, -1);
+        }
+        //Move up-right
+        else if (joystickMovement.x > 0.4 && joystickMovement.x < 0.9 && joystickMovement.y > 0)
+        {
+            MoveItem(1, -1);
+        }
+        //Move right
+        else if (joystickMovement.x > 0 && joystickMovement.y > -0.4 && joystickMovement.y < 0.4)
+        {
+            MoveItem(1, 0);
+        }
+        //Move down-right
+        else if (joystickMovement.x > 0.4 && joystickMovement.x < 0.9 && joystickMovement.y < 0)
+        {
+            MoveItem(1, 1);
+        }
+        //Move down
+        else if (joystickMovement.x > -0.4 && joystickMovement.x < 0.4 && joystickMovement.y < 0)
+        {
+            MoveItem(0, 1);
+        }
+        //Move down-left
+        else if (joystickMovement.x > -0.9 && joystickMovement.x < -0.4 && joystickMovement.y < 0)
+        {
+            MoveItem(-1, 1);
+        }
+        //Move left
+        else if (joystickMovement.x < 0 && joystickMovement.y > -0.4 && joystickMovement.y < 0.4)
+        {
+            MoveItem(-1, 0);
+        }
+        //Move up-left
+        else if (joystickMovement.x > -0.9 && joystickMovement.x < -0.4 && joystickMovement.y > 0)
+        {
+            MoveItem(-1, -1);
         }
     }
 
     //Spawn Bomb on player's position
     private void UseBomb()
     {
-        movementDisabled = true;
-        moveCooldown = moveInterval;
-        gameManager.SpawnBomb(xPos, yPos);
+        //Spawn Bomb
+        if (Input.GetKeyDown(KeyCode.Space) && gameManager.CanUseBomb())
+        {
+            movementDisabled = true;
+            moveCooldown = moveInterval;
+            gameManager.SpawnBomb(xPos, yPos);
+        }
+    }
+
+    protected override void MoveItem(int xMove, int yMove)
+    {
+        base.MoveItem(xMove, yMove);
+
+        if (base.collisionResult == 1 || base.collisionResult == 3)
+        {
+            movementDisabled = true;
+            moveCooldown = 0.18f;
+        }
     }
 }
