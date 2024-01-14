@@ -254,4 +254,12 @@ public class Player : Moveable
             moveCooldown = 0.18f;
         }
     }
+
+    public void MoveFromButton(int x, int y)
+    {
+        if (!movementDisabled && !gameManager.playerMovementDisabled)
+        {
+            MoveItem(x, y);
+        }
+    }
 }
