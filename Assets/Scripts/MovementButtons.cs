@@ -17,7 +17,7 @@ public class MovementButtons : MonoBehaviour
     {
         if (player == null)
         {
-            player = GameObject.FindFirstObjectByType<Player>();
+            player = FindFirstObjectByType<Player>();
         }
     }
 

@@ -244,7 +244,7 @@ public class Player : Moveable
         {
             movementDisabled = true;
             moveCooldown = moveInterval;
-            gameManager.SpawnBomb(xPos, yPos);
+            gameManager.SpawnBombs(xPos, yPos);
         }
     }
 

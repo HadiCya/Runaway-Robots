@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using static UnityEditor.Progress;
 
 public class GameManager : MonoBehaviour
 {
@@ -156,6 +157,7 @@ public class GameManager : MonoBehaviour
         gameBoard[x, y] = null;
     }
 
+    //DEPRECATED
     //Spawn Bomb powerups at 3x3 grid around player's position
     public void SpawnBomb(int x, int y)
     {
@@ -200,6 +202,59 @@ public class GameManager : MonoBehaviour
         if (x + 1 <= board_size - 1 && y + 1 <= board_size - 1 && CheckIfEmpty(x + 1, y + 1) == 1)
         {
             PlaceBoardItem(bomb, x + 1, y + 1);
+        }
+
+        bombCount--;
+        bombCountText.text = bombCount.ToString();
+        bombCooldown = bombInterval;
+        bombUiImage.color = Color.gray; //Gray out bomb button (make it look better later)
+        // *Disable bomb UI*
+    }
+
+    //NEW
+    //Check for robots adjacent to player and destroy them
+    public void SpawnBombs(int x, int y)
+    {
+        PlaySound(bombSound);
+        //Top-left
+        if (x - 1 >= 0 && y - 1 >= 0 && gameBoard[x - 1, y - 1] != null && gameBoard[x - 1, y - 1].type == "robot")
+        {
+            gameBoard[x - 1, y - 1].DestroyItem();
+        }
+        //Top-middle
+        if (y - 1 >= 0 && gameBoard[x, y - 1] != null && gameBoard[x, y - 1].type == "robot")
+        {
+            gameBoard[x, y - 1].DestroyItem();
+        }
+        //Top-right
+        if (x + 1 <= board_size - 1 && y - 1 >= 0 && gameBoard[x + 1, y - 1] != null && gameBoard[x + 1, y - 1].type == "robot")
+        {
+            gameBoard[x + 1, y - 1].DestroyItem();
+        }
+        //Middle-Left
+        if (x - 1 >= 0 && gameBoard[x - 1, y] != null && gameBoard[x - 1, y].type == "robot")
+        {
+            gameBoard[x - 1, y].DestroyItem();
+        }
+        //Middle-Right
+        if (x + 1 <= board_size - 1 && gameBoard[x + 1, y] != null && gameBoard[x + 1, y].type == "robot")
+        {
+            gameBoard[x + 1, y].DestroyItem();
+        }
+        //Bottom-Left
+        if (x - 1 >= 0 && y + 1 <= board_size - 1 && gameBoard[x - 1, y + 1] != null && gameBoard[x - 1, y + 1].type == "robot")
+        {
+            gameBoard[x - 1, y + 1].DestroyItem();
+        }
+        //Bottom-Middle
+        if (y + 1 <= board_size - 1 && gameBoard[x, y + 1] != null && gameBoard[x, y + 1].type == "robot")
+        {
+            gameBoard[x, y + 1].DestroyItem();
+        }
+        //Bottom-Right
+        if (x + 1 <= board_size - 1 && y + 1 <= board_size - 1 && gameBoard[x + 1, y + 1] != null && gameBoard[x + 1, y + 1].type == "robot")
+        {
+            gameBoard[x + 1, y + 1].DestroyItem();
         }
 
         bombCount--;
@@ -314,6 +369,7 @@ public class GameManager : MonoBehaviour
         return 1;
     }
 
+    //ALSO DEPRECATED
     //Check if the indicated position is empty (for bombs)
     //  0 == not empty
     //  1 == empty or robot
