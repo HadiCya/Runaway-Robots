@@ -27,6 +27,10 @@ public class Player : Moveable
     //Joystick stuff
     private PlayerJoystick playerJoystick;
 
+    //Buffers
+    private int bufferX;  // x axis input buffer
+    private int bufferY;  // y axis input buffer
+
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -37,12 +41,13 @@ public class Player : Moveable
     // Update is called once per frame
     void Update()
     {
-        if (!gameManager.playerMovementDisabled && !movementDisabled)
+        if (!gameManager.playerMovementDisabled)
         {
             KeyBoardControls();
             //TouchControls();
             JoystickControls();
             UseBomb();
+            CheckMovementBuffer();
         }
 
         //Movement cooldown timer
@@ -59,54 +64,53 @@ public class Player : Moveable
     private void KeyBoardControls()
     {
         //Move player's icon in direction indicated by player
-        if (!movementDisabled)
+
+        //Move up
+        if (Input.GetKeyDown(KeyCode.Keypad8) || Input.GetKeyDown(KeyCode.W))
         {
-            //Move up
-            if (Input.GetKeyDown(KeyCode.Keypad8) || Input.GetKeyDown(KeyCode.W))
-            {
-                MoveItem(0, -1);
-            }
-            //Move up-right
-            else if (Input.GetKeyDown(KeyCode.Keypad9) || Input.GetKeyDown(KeyCode.E))
-            {
-                MoveItem(1, -1);
-            }
-            //Move right
-            else if (Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.D))
-            {
-                MoveItem(1, 0);
-            }
-            //Move down-right
-            else if (Input.GetKeyDown(KeyCode.Keypad3) || Input.GetKeyDown(KeyCode.C))
-            {
-                MoveItem(1, 1);
-            }
-            //Move down
-            else if (Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.X))
-            {
-                MoveItem(0, 1);
-            }
-            //Move down-left
-            else if (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Z))
-            {
-                MoveItem(-1, 1);
-            }
-            //Move left
-            else if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.A))
-            {
-                MoveItem(-1, 0);
-            }
-            //Move up-left
-            else if (Input.GetKeyDown(KeyCode.Keypad7) || Input.GetKeyDown(KeyCode.Q))
-            {
-                MoveItem(-1, -1);
-            }
+            MoveItem(0, -1);
         }
+        //Move up-right
+        else if (Input.GetKeyDown(KeyCode.Keypad9) || Input.GetKeyDown(KeyCode.E))
+        {
+            MoveItem(1, -1);
+        }
+        //Move right
+        else if (Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.D))
+        {
+            MoveItem(1, 0);
+        }
+        //Move down-right
+        else if (Input.GetKeyDown(KeyCode.Keypad3) || Input.GetKeyDown(KeyCode.C))
+        {
+            MoveItem(1, 1);
+        }
+        //Move down
+        else if (Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.X))
+        {
+            MoveItem(0, 1);
+        }
+        //Move down-left
+        else if (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Z))
+        {
+            MoveItem(-1, 1);
+        }
+        //Move left
+        else if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.A))
+        {
+            MoveItem(-1, 0);
+        }
+        //Move up-left
+        else if (Input.GetKeyDown(KeyCode.Keypad7) || Input.GetKeyDown(KeyCode.Q))
+        {
+            MoveItem(-1, -1);
+        }
+
     }
 
     private void TouchControls()
     {
-        if (Input.touchCount > 0 && !movementDisabled)
+        if (Input.touchCount > 0)
         {
             playerTouch = Input.GetTouch(0);
 
@@ -246,20 +250,47 @@ public class Player : Moveable
 
     protected override void MoveItem(int xMove, int yMove)
     {
-        base.MoveItem(xMove, yMove);
-
-        if (base.collisionResult == 1 || base.collisionResult == 3)
+        if (!movementDisabled)
         {
-            movementDisabled = true;
-            moveCooldown = 0.18f;
+            base.MoveItem(xMove, yMove);
+
+            if (base.collisionResult == 1 || base.collisionResult == 3)
+            {
+                movementDisabled = true;
+                moveCooldown = 0.18f;
+            }
+        }
+        else
+        {
+            SetMovementBuffer(xMove, yMove);
         }
     }
 
     public void MoveFromButton(int x, int y)
     {
-        if (!movementDisabled && !gameManager.playerMovementDisabled)
+        if (!gameManager.playerMovementDisabled)
         {
             MoveItem(x, y);
+        }
+    }
+
+    private void SetMovementBuffer(int x, int y)
+    {
+        bufferX = x;
+        bufferY = y;
+    }
+
+    private bool BufferEmpty()
+    {
+        return bufferX == 0 && bufferY == 0;
+    }
+
+    private void CheckMovementBuffer()
+    {
+        if (!movementDisabled && !gameManager.playerMovementDisabled && !BufferEmpty())
+        {
+            MoveItem(bufferX, bufferY);
+            SetMovementBuffer(0, 0);
         }
     }
 }
