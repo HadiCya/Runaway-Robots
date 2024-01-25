@@ -13,7 +13,7 @@ public class Player : Moveable
 {
     private bool movementDisabled = false;
     private float moveCooldown = 0f;
-    private readonly float moveInterval = 0.5f;
+    private readonly float moveInterval = 0.15f;
 
     //Touchscreen stuff
     private Touch playerTouch;
@@ -30,6 +30,7 @@ public class Player : Moveable
     //Buffers
     private int bufferX;  // x axis input buffer
     private int bufferY;  // y axis input buffer
+    private bool useBuffer = true;
 
     void Start()
     {
@@ -198,41 +199,49 @@ public class Player : Moveable
         if (joystickMovement.x > -0.4 && joystickMovement.x < 0.4 && joystickMovement.y > 0)
         {
             MoveItem(0, -1);
+            useBuffer = false;
         }
         //Move up-right
         else if (joystickMovement.x > 0.4 && joystickMovement.x < 0.9 && joystickMovement.y > 0)
         {
             MoveItem(1, -1);
+            useBuffer = false;
         }
         //Move right
         else if (joystickMovement.x > 0 && joystickMovement.y > -0.4 && joystickMovement.y < 0.4)
         {
             MoveItem(1, 0);
+            useBuffer = false;
         }
         //Move down-right
         else if (joystickMovement.x > 0.4 && joystickMovement.x < 0.9 && joystickMovement.y < 0)
         {
             MoveItem(1, 1);
+            useBuffer = false;
         }
         //Move down
         else if (joystickMovement.x > -0.4 && joystickMovement.x < 0.4 && joystickMovement.y < 0)
         {
             MoveItem(0, 1);
+            useBuffer = false;
         }
         //Move down-left
         else if (joystickMovement.x > -0.9 && joystickMovement.x < -0.4 && joystickMovement.y < 0)
         {
             MoveItem(-1, 1);
+            useBuffer = false;
         }
         //Move left
         else if (joystickMovement.x < 0 && joystickMovement.y > -0.4 && joystickMovement.y < 0.4)
         {
             MoveItem(-1, 0);
+            useBuffer = false;
         }
         //Move up-left
         else if (joystickMovement.x > -0.9 && joystickMovement.x < -0.4 && joystickMovement.y > 0)
         {
             MoveItem(-1, -1);
+            useBuffer = false;
         }
     }
 
@@ -257,10 +266,10 @@ public class Player : Moveable
             if (base.collisionResult == 1 || base.collisionResult == 3)
             {
                 movementDisabled = true;
-                moveCooldown = 0.18f;
+                moveCooldown = moveInterval;
             }
         }
-        else
+        else if (useBuffer)
         {
             SetMovementBuffer(xMove, yMove);
         }
@@ -291,6 +300,7 @@ public class Player : Moveable
         {
             MoveItem(bufferX, bufferY);
             SetMovementBuffer(0, 0);
+            useBuffer = true;
         }
     }
 }
