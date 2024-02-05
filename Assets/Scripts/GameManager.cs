@@ -510,7 +510,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void GenerateLevel() {
+    private void GenerateLevel()
+    {
         ClearBoard();
         if (levelCount > 0)
         {
@@ -518,38 +519,123 @@ public class GameManager : MonoBehaviour
         }
 
         //Difficutly stuff
-        int num_of_robots = levelCount + 1;
-        int num_of_fences = levelCount + 1;
-        int num_of_walls = (levelCount + 1) / 2;
-        int num_of_pits = (levelCount + 1) / 2;
+        int num_of_robots = (levelCount * 2) + 1;
+        int num_of_fences = (levelCount * 2) + 3;
+        int num_of_walls = (levelCount * 5);
+        int num_of_pits = 2;
         //Board stuff
         playerMovementDisabled = false;
         levelCompleteText.gameObject.SetActive(false);
-        
-        PlaceItems(player, 1);
-        PlaceItems(pit, num_of_pits);
-        PlaceItems(wall, num_of_walls);
-        PlaceItems(fence, num_of_fences);
-        PlaceItems(robot, num_of_robots);
-        
+
+        int[,] levelMap = new int[board_size, board_size];
+        for (int i = 0; i < board_size; i++)
+        {
+            for (int j = 0; j < board_size; j++)
+            {
+                levelMap[i, j] = 0;
+            }
+        }
+
+        PlaceItems(player, 1, levelMap);
+        PlaceItems(pit, num_of_pits, levelMap);
+        PlaceItems(wall, num_of_walls, levelMap);
+        PlaceItems(fence, num_of_fences, levelMap);
+        PlaceItems(robot, num_of_robots, levelMap);
+
         //Bomb stuff
         AddBomb();
         //Other
         levelCount++;
     }
 
-    private void PlaceItems(BoardItem item, int count) {
+    private void PlaceItems(BoardItem item, int count, int[,] levelMap)
+    {
         int index = 0;
+        int spin_count = 0;
         while (index < count)
         {
+            spin_count += 1;
+            if (spin_count > 500)
+            {
+                print("ERROR IN LEVEL GENERATION");
+                break;
+            }
             int randrow = UnityEngine.Random.Range(1, board_size);
             int randcol = UnityEngine.Random.Range(1, board_size);
-            if (gameBoard[randrow, randcol] == null && !PlayerInProximity(randrow, randcol, 3))
+            if (gameBoard[randrow, randcol] == null && !PlayerInProximity(randrow, randcol, 3) && CheckIfLegal(randrow, randcol, levelMap))
             {
                 PlaceBoardItem(item, randrow, randcol);
+                levelMap[randrow, randcol] = 1;
                 index++;
             }
         }
+    }
+
+    // Checks if an item can be placed here without causing a potential softlock.
+    private bool CheckIfLegal(int row, int col, int[,] levelMap)
+    {
+        int totalZeros = 0;
+        (int, int) firstZero = (0, 0);
+
+        for (int i = 0; i < board_size; i++)
+        {
+            for (int j = 0; j < board_size; j++)
+            {
+                if (levelMap[i, j] == 0 && (i != row || j != col))
+                {
+                    totalZeros++;
+                    firstZero = (i, j);
+                }
+            }
+        }
+
+        levelMap[row, col] = -1;
+        int areaZeroCount = DFS(firstZero.Item1, firstZero.Item2, levelMap);
+        ClearMapNegatives(levelMap);
+
+        //print("total zeros: " +  totalZeros);
+        //print("area zeros: " + areaZeroCount);
+        return totalZeros == areaZeroCount;
+    }
+
+    // sets all -1s in the levelMap to 0 so the levelMap can be used in the next check.
+    private void ClearMapNegatives(int[,] levelMap)
+    {
+        for (int i = 0; i < board_size; i++)
+        {
+            for (int j = 0; j < board_size; j++)
+            {
+                if (levelMap[i, j] == -1)
+                {
+                    levelMap[i, j] = 0;
+                }
+            }
+        }
+    }
+
+    // Counts all connected zeros to a given cell.
+    private int DFS(int row, int col, int[,] levelMap)
+    {
+        int zeroCount = 0;
+
+        if (row < 0 || row >= board_size || col < 0 || col >= board_size || levelMap[row, col] != 0)
+        {
+            return 0;
+        }
+
+        levelMap[row, col] = -1;
+        zeroCount += 1;
+
+        for (int i = row - 1; i <= row + 1; i++)
+        {
+            for (int j = col - 1; j <= col + 1; j++)
+            {
+                zeroCount += DFS(i, j, levelMap);
+            }
+        }
+
+        return zeroCount;
+
     }
 
     // Return True if the player is within range number of squares from the given cords. False otherwise
