@@ -6,6 +6,8 @@ using Unity.Services.Leaderboards;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Newtonsoft.Json;
+using System;
+using System.Text;
 
 public class Leaderboard : MonoBehaviour
 {
@@ -54,5 +56,18 @@ public class Leaderboard : MonoBehaviour
     {
         var scoresResponse = await LeaderboardsService.Instance.GetScoresAsync(LeaderboardId);
         Debug.Log(JsonConvert.SerializeObject(scoresResponse));
+    }
+
+    public async void UpdateName(string name)
+    {
+        var nameResponse = await AuthenticationService.Instance.UpdatePlayerNameAsync(name);
+        Debug.Log(JsonConvert.SerializeObject(nameResponse));
+    }
+
+    public async Task<string> GetName()
+    {
+        var nameResponse = await AuthenticationService.Instance.GetPlayerNameAsync();
+        Debug.Log(JsonConvert.SerializeObject(nameResponse));
+        return nameResponse;
     }
 }
