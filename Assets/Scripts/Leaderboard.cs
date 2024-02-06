@@ -27,7 +27,6 @@ public class Leaderboard : MonoBehaviour
         DontDestroyOnLoad(this);
         await UnityServices.InitializeAsync();
         await SignInAnonymously();
-        GetScores();
     }
 
     async Task SignInAnonymously()
@@ -52,10 +51,29 @@ public class Leaderboard : MonoBehaviour
         Debug.Log(JsonConvert.SerializeObject(scoreResponse));
     }
 
-    public async void GetScores()
+    public async Task<string[,]> GetScores()
     {
+        string[,] scores = new string[10,2];
+
         var scoresResponse = await LeaderboardsService.Instance.GetScoresAsync(LeaderboardId);
         Debug.Log(JsonConvert.SerializeObject(scoresResponse));
+
+        if (scoresResponse != null && scoresResponse.Results != null)
+        {
+            int i = 0;
+            foreach (var result in scoresResponse.Results)
+            {
+                scores[i, 0] = result.PlayerName;
+                scores[i, 1] = result.Score.ToString();
+                i++;
+            }
+        }
+        else
+        {
+            scores[0,0] = "No results found";
+        }
+
+        return scores;
     }
 
     public async void UpdateName(string name)
