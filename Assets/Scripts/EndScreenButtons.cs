@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Services.Leaderboards.Models;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,6 +19,10 @@ public class EndScreenButtons : MonoBehaviour
     private int totalScoreScore;
 
     private Leaderboard leaderboard;
+    public GameObject leaderboardDisplay;
+    public TextMeshProUGUI leaderboardNames;
+    public TextMeshProUGUI leaderboardScores;
+    public TextMeshProUGUI currentPlayerScore;
 
     // Start is called before the first frame update
     void Start()
@@ -45,8 +51,47 @@ public class EndScreenButtons : MonoBehaviour
         leaderboard.AddScore(totalScoreScore);
     }
 
+    public async void OpenLeaderboard()
+    {
+        leaderboardDisplay.SetActive(true);
+        if (string.Equals(leaderboardNames.text, "Loading scores..."))
+        {
+            string[,] scores = await leaderboard.GetScores();
+            leaderboardNames.text = string.Empty;
+            leaderboardScores.text = string.Empty;
+            for (int i = 0; i < scores.GetLength(0); i++)
+            {
+                leaderboardNames.text += scores[i, 0] + "\n";
+            }
+            for (int i = 0; i < scores.GetLength(0); i++)
+            {
+                leaderboardScores.text += scores[i, 1] + "\n";
+            }
+        }
+        currentPlayerScore.text = await leaderboard.GetPlayerScore();
+    }
+
+    public void CloseLeaderboard()
+    {
+        leaderboardDisplay.SetActive(false);
+    }
+
     public void ReturnToMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void PlayAgain()
+    {
+        SceneManager.LoadScene("MovementAndCollisions");
+    }
+
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        EditorApplication.ExitPlaymode();
+#else
+        Application.Quit();
+#endif
     }
 }

@@ -14,6 +14,7 @@ public class MainMenuButtons : MonoBehaviour
     public GameObject leaderboardDisplay;
     public TextMeshProUGUI leaderboardNames;
     public TextMeshProUGUI leaderboardScores;
+    public TextMeshProUGUI currentPlayerScore;
     public GameObject settingsMenu;
 
     // Start is called before the first frame update
@@ -64,6 +65,7 @@ public class MainMenuButtons : MonoBehaviour
         //and then limit it to once per month or just once period?
         leaderboard.UpdateName(usernameInputfield.text);
         usernameInputfield.text = string.Empty;
+        GetName();
     }
 
     public async void OpenLeaderboard()
@@ -83,6 +85,7 @@ public class MainMenuButtons : MonoBehaviour
                 leaderboardScores.text += scores[i, 1] + "\n";
             }
         }
+        currentPlayerScore.text = await leaderboard.GetPlayerScore();
     }
 
     public void CloseLeaderboard()

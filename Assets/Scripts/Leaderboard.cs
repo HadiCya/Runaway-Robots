@@ -8,6 +8,8 @@ using Unity.Services.Core;
 using Newtonsoft.Json;
 using System;
 using System.Text;
+using UnityEngine.SocialPlatforms.Impl;
+using System.Net;
 
 public class Leaderboard : MonoBehaviour
 {
@@ -49,6 +51,23 @@ public class Leaderboard : MonoBehaviour
     {
         var scoreResponse = await LeaderboardsService.Instance.AddPlayerScoreAsync(LeaderboardId, score);
         Debug.Log(JsonConvert.SerializeObject(scoreResponse));
+    }
+
+    public async Task<string> GetPlayerScore()
+    {
+        //will catch 404 not found exception if the user doesn't have a score yet 
+        try
+        {
+            var scoreResponse = await LeaderboardsService.Instance.GetPlayerScoreAsync(LeaderboardId);
+            Debug.Log(JsonConvert.SerializeObject(scoreResponse));
+            return ($"{scoreResponse.Rank + 1}. {scoreResponse.PlayerName}\t{scoreResponse.Score}");
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
+        
+        return "No score found";
     }
 
     public async Task<string[,]> GetScores()
