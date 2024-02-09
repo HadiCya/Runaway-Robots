@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     //Bomb stuff
     public static int bombCount = 0;
     private float bombCooldown = 0f;
-    private readonly float bombInterval = 3f;
+    private readonly float bombInterval = 0.15f;
     private UnityEngine.UI.Image bombUiImage;
     private TextMeshProUGUI bombCountText;
     private TextMeshProUGUI levelCompleteText;
@@ -448,10 +448,10 @@ public class GameManager : MonoBehaviour
         robotsDefeated++;
         if (robotCount == 0)
         {
-            Debug.Log("All gone!");
+            //Debug.Log("All gone!");
             playerMovementDisabled = true;
             levelCompleteText.gameObject.SetActive(true);
-            Invoke(nameof(GenerateLevel), 1);
+            Invoke(nameof(GenerateLevel), 0.5f);
         }
     }
 
@@ -503,7 +503,7 @@ public class GameManager : MonoBehaviour
             {
                 if (!(gameBoard[j, i] == null))
                 {
-                    Debug.Log("Level end destroyed: " + gameBoard[j, i].type);
+                    //Debug.Log("Level end destroyed: " + gameBoard[j, i].type);
                     gameBoard[j, i].DestroyItem();
                 }
             }
