@@ -555,14 +555,14 @@ public class GameManager : MonoBehaviour
         while (index < count)
         {
             spin_count += 1;
-            if (spin_count > 500)
+            if (spin_count > 5000)
             {
                 print("ERROR IN LEVEL GENERATION");
                 break;
             }
             int randrow = UnityEngine.Random.Range(1, board_size);
             int randcol = UnityEngine.Random.Range(1, board_size);
-            if (gameBoard[randrow, randcol] == null && !PlayerInProximity(randrow, randcol, 3) && CheckIfLegal(randrow, randcol, levelMap))
+            if (gameBoard[randrow, randcol] == null && (item.type != "robot" || !PlayerInProximity(randrow, randcol, 3)) && CheckIfLegal(randrow, randcol, levelMap))
             {
                 PlaceBoardItem(item, randrow, randcol);
                 levelMap[randrow, randcol] = 1;
