@@ -2134,6 +2134,105 @@ RectTransform:
   m_AnchoredPosition: {x: 108, y: 110}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1719232543 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7009049532612887932, guid: c9b3176da9838664183ac94c0a01d94d, type: 3}
+  m_PrefabInstance: {fileID: 1004018370}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1719232544 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3398904229065484925, guid: c9b3176da9838664183ac94c0a01d94d, type: 3}
+  m_PrefabInstance: {fileID: 1004018370}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1719232545 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 84800775936760276, guid: c9b3176da9838664183ac94c0a01d94d, type: 3}
+  m_PrefabInstance: {fileID: 1004018370}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1719232546 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7887629412822451006, guid: c9b3176da9838664183ac94c0a01d94d, type: 3}
+  m_PrefabInstance: {fileID: 1004018370}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1719232547 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7759119215752095532, guid: c9b3176da9838664183ac94c0a01d94d, type: 3}
+  m_PrefabInstance: {fileID: 1004018370}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1719232548 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4032898521505760025, guid: c9b3176da9838664183ac94c0a01d94d, type: 3}
+  m_PrefabInstance: {fileID: 1004018370}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1719232549 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3536909898198494628, guid: c9b3176da9838664183ac94c0a01d94d, type: 3}
+  m_PrefabInstance: {fileID: 1004018370}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1719232550 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1031950927906754874, guid: c9b3176da9838664183ac94c0a01d94d, type: 3}
+  m_PrefabInstance: {fileID: 1004018370}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1719232551 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 143107420549386361, guid: c9b3176da9838664183ac94c0a01d94d, type: 3}
+  m_PrefabInstance: {fileID: 1004018370}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1797766475
 GameObject:
   m_ObjectHideFlags: 0
@@ -2401,7 +2500,17 @@ MonoBehaviour:
   bombsKeptNumText: {fileID: 44874263}
   totalScoreNumText: {fileID: 260188789}
   leaderboardDisplay: {fileID: 1004018375}
-  leaderboardNames: {fileID: 1004018374}
+  leaderboardNames:
+  - {fileID: 1004018374}
+  - {fileID: 1719232551}
+  - {fileID: 1719232550}
+  - {fileID: 1719232549}
+  - {fileID: 1719232548}
+  - {fileID: 1719232547}
+  - {fileID: 1719232546}
+  - {fileID: 1719232545}
+  - {fileID: 1719232544}
+  - {fileID: 1719232543}
   leaderboardScores: {fileID: 1004018373}
   currentPlayerScore: {fileID: 1004018372}
 --- !u!1 &1889599974

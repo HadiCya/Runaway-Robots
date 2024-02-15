@@ -43,14 +43,28 @@ public class Leaderboard : MonoBehaviour
             Debug.Log(s);
         };
 
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        try
+        {
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
     }
 
     //Will only update if new score is higher than player's best score
     public async void AddScore(int score)
     {
-        var scoreResponse = await LeaderboardsService.Instance.AddPlayerScoreAsync(LeaderboardId, score);
-        Debug.Log(JsonConvert.SerializeObject(scoreResponse));
+        try
+        {
+            var scoreResponse = await LeaderboardsService.Instance.AddPlayerScoreAsync(LeaderboardId, score);
+            Debug.Log(JsonConvert.SerializeObject(scoreResponse));
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
     }
 
     public async Task<string> GetPlayerScore()
@@ -72,39 +86,66 @@ public class Leaderboard : MonoBehaviour
 
     public async Task<string[,]> GetScores()
     {
-        string[,] scores = new string[10,2];
-
-        var scoresResponse = await LeaderboardsService.Instance.GetScoresAsync(LeaderboardId);
-        Debug.Log(JsonConvert.SerializeObject(scoresResponse));
-
-        if (scoresResponse != null && scoresResponse.Results != null)
+        string[,] scores = new string[10, 2];
+        try
         {
-            int i = 0;
-            foreach (var result in scoresResponse.Results)
+            var scoresResponse = await LeaderboardsService.Instance.GetScoresAsync(LeaderboardId);
+            Debug.Log(JsonConvert.SerializeObject(scoresResponse));
+
+            if (scoresResponse != null && scoresResponse.Results != null)
             {
-                scores[i, 0] = result.PlayerName;
-                scores[i, 1] = result.Score.ToString();
-                i++;
+                int i = 0;
+                foreach (var result in scoresResponse.Results)
+                {
+                    scores[i, 0] = result.PlayerName;
+                    scores[i, 1] = result.Score.ToString();
+                    i++;
+                }
+                for (int e = i; e < 10; e++)
+                {
+                    scores[e, 0] = "No score yet";
+                    scores[e, 1] = "0";
+                }
             }
+            else
+            {
+                scores[0, 0] = "No results found";
+            }
+            return scores;
         }
-        else
+        catch (Exception e)
         {
-            scores[0,0] = "No results found";
+            Debug.Log(e);
+            scores[0, 0] = "Failed to retreive scores";
+            return scores;
         }
-
-        return scores;
     }
 
     public async void UpdateName(string name)
     {
-        var nameResponse = await AuthenticationService.Instance.UpdatePlayerNameAsync(name);
-        Debug.Log(JsonConvert.SerializeObject(nameResponse));
+        try
+        {
+            var nameResponse = await AuthenticationService.Instance.UpdatePlayerNameAsync(name);
+            Debug.Log(JsonConvert.SerializeObject(nameResponse));
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
     }
 
     public async Task<string> GetName()
     {
-        var nameResponse = await AuthenticationService.Instance.GetPlayerNameAsync();
-        Debug.Log(JsonConvert.SerializeObject(nameResponse));
-        return nameResponse;
+        try
+        {
+            var nameResponse = await AuthenticationService.Instance.GetPlayerNameAsync();
+            Debug.Log(JsonConvert.SerializeObject(nameResponse));
+            return nameResponse;
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+            return "Failed to sign in";
+        }
     }
 }

@@ -20,7 +20,7 @@ public class EndScreenButtons : MonoBehaviour
 
     private Leaderboard leaderboard;
     public GameObject leaderboardDisplay;
-    public TextMeshProUGUI leaderboardNames;
+    public TextMeshProUGUI[] leaderboardNames;
     public TextMeshProUGUI leaderboardScores;
     public TextMeshProUGUI currentPlayerScore;
 
@@ -54,14 +54,14 @@ public class EndScreenButtons : MonoBehaviour
     public async void OpenLeaderboard()
     {
         leaderboardDisplay.SetActive(true);
-        if (string.Equals(leaderboardNames.text, "Loading scores..."))
+        if (string.Equals(leaderboardNames[0].text, "Loading score..."))
         {
             string[,] scores = await leaderboard.GetScores();
-            leaderboardNames.text = string.Empty;
+            //leaderboardNames[0].text = string.Empty;
             leaderboardScores.text = string.Empty;
             for (int i = 0; i < scores.GetLength(0); i++)
             {
-                leaderboardNames.text += scores[i, 0] + "\n";
+                leaderboardNames[i].text = scores[i, 0];
             }
             for (int i = 0; i < scores.GetLength(0); i++)
             {
