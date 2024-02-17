@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
 
     public AudioSource audioSource;
     public AudioClip cancelSound, deathSound, electricSound, tickSound, bombSound;
+    public MusicSpeedController musicSpeedController;
 
     //Board size stuff
     public GameObject grid;
@@ -451,10 +452,22 @@ public class GameManager : MonoBehaviour
             //Debug.Log("All gone!");
             playerMovementDisabled = true;
             levelCompleteText.gameObject.SetActive(true);
+            SpeedUpMusic();
             Invoke(nameof(GenerateLevel), 0.5f);
         }
     }
 
+    private void SpeedUpMusic()
+    {
+        if(musicSpeedController != null)
+        {
+            musicSpeedController.UpdateMusicSpeed(levelCount);
+        }
+        else
+        {
+            print("ERROR: No MusicSpeedController");
+        }
+    }
 
     private void StrToLevel(string my_str) {
         int counter = 0;
