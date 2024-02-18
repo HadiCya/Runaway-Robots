@@ -562,10 +562,13 @@ public class GameManager : MonoBehaviour
             }
             int randrow = UnityEngine.Random.Range(1, board_size);
             int randcol = UnityEngine.Random.Range(1, board_size);
-            if (gameBoard[randrow, randcol] == null && (item.type != "robot" || !PlayerInProximity(randrow, randcol, 3)) && CheckIfLegal(randrow, randcol, levelMap))
+            if (gameBoard[randrow, randcol] == null && (item.type != "robot" || !PlayerInProximity(randrow, randcol, 3)) && (item.type == "robot" || CheckIfLegal(randrow, randcol, levelMap)))
             {
                 PlaceBoardItem(item, randrow, randcol);
-                levelMap[randrow, randcol] = 1;
+                if (item.type != "robot")
+                {
+                    levelMap[randrow, randcol] = 1;
+                }
                 index++;
             }
         }
