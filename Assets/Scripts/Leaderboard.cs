@@ -10,6 +10,7 @@ using System;
 using System.Text;
 using UnityEngine.SocialPlatforms.Impl;
 using System.Net;
+using System.Runtime.CompilerServices;
 
 public class Leaderboard : MonoBehaviour
 {
@@ -121,16 +122,18 @@ public class Leaderboard : MonoBehaviour
         }
     }
 
-    public async void UpdateName(string name)
+    public async Task<string> UpdateName(string name)
     {
         try
         {
             var nameResponse = await AuthenticationService.Instance.UpdatePlayerNameAsync(name);
             Debug.Log(JsonConvert.SerializeObject(nameResponse));
+            return nameResponse;
         }
         catch (Exception e)
         {
             Debug.Log(e);
+            return "Failed to update name. Try again later";
         }
     }
 
@@ -145,7 +148,7 @@ public class Leaderboard : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log(e);
-            return "Failed to sign in";
+            return "Failed to sign in. Try again later.";
         }
     }
 }

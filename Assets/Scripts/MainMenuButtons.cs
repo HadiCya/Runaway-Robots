@@ -16,6 +16,8 @@ public class MainMenuButtons : MonoBehaviour
     public TextMeshProUGUI leaderboardScores;
     public TextMeshProUGUI currentPlayerScore;
     public GameObject settingsMenu;
+    private ProfanityList profanityList;
+    public TextMeshProUGUI messageBox;
 
     // Start is called before the first frame update
     void Start()
@@ -48,22 +50,30 @@ public class MainMenuButtons : MonoBehaviour
 
     public async void GetName()
     {
-        //TODO: CHECK IF LOGGED IN
         usernameTextbox.text = await leaderboard.GetName();
     }
 
-    public void UpdateName()
+    public async void UpdateName()
     {
+        messageBox.text = string.Empty;
         //"The name should not contain any white space and should have a maximum length of 50 characters" - from unity
         if (usernameInputfield.text.Contains(" ") || usernameInputfield.text.Length < 2)
         {
             Debug.LogError("Invalid username: name must be 3-20 characters and contain no white space");
+            messageBox.text = "Name must be 3-20 characters and contain no white space";
             return;
         }
-        //and then proabbly figure out a profanity filter 
-        // https://github.com/coffee-and-fun/google-profanity-words ?
-        //and then limit it to once per month or just once period?
-        leaderboard.UpdateName(usernameInputfield.text);
+        profanityList = gameObject.GetComponent<ProfanityList>();
+        if (profanityList.isBadWord(usernameInputfield.text.ToLower()))
+        {
+            Debug.LogError($"Invalid username: {usernameInputfield.text} is a bad word >:(");
+            messageBox.text = "That's a banned word";
+            return;
+        }
+
+        //TODO: limit it to once per month or just once period?
+
+        await leaderboard.UpdateName(usernameInputfield.text);
         usernameInputfield.text = string.Empty;
         GetName();
     }
