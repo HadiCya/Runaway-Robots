@@ -45,10 +45,13 @@ public class GameManager : MonoBehaviour
     public bool playerMovementDisabled = false;
 
     public GameObject audioGameObject;
+    public GameObject musicGameObject;
     //Index 0: cancelSound; 1: deathSound; 2: electricSound; 3: tickSound; 4: bombSound
     private AudioSource[] audioSources;
     private Dictionary<SoundEffect, AudioSource> soundEffectDictionary = new();
     public MusicSpeedController musicSpeedController;
+    private float sfxVolume;
+    private float bgmVolume;
 
     //Board size stuff
     public GameObject grid;
@@ -84,6 +87,23 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < soundEffects.Length; i++)
         {
             soundEffectDictionary[soundEffects[i]] = audioSources[i];
+            if (PlayerPrefs.HasKey("sfxVolume"))
+            {
+                audioSources[i].volume = PlayerPrefs.GetFloat("sfxVolume");
+            }
+            else
+            {
+                audioSources[i].volume = 1;
+            }
+        }
+
+        if (PlayerPrefs.HasKey("bgmVolume"))
+        {
+            musicGameObject.GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("bgmVolume");
+        }
+        else
+        {
+            musicGameObject.GetComponent<AudioSource>().volume = 1;
         }
     }
 

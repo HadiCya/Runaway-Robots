@@ -1254,6 +1254,8 @@ MonoBehaviour:
   currentPlayerScore: {fileID: 1643466635}
   settingsMenu: {fileID: 411595817}
   messageBox: {fileID: 2759281594936055317}
+  sfxVolumeSlider: {fileID: 2759281594936055319}
+  bgmVolumeSlider: {fileID: 2759281594936055318}
 --- !u!114 &936754351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2052,6 +2054,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 936754349}
     m_Modifications:
+    - target: {fileID: 156520226244877431, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 156520226244877431, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 156520226244877431, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 400690236246617995, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2132,10 +2146,70 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1209176970766008636, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1209176970766008636, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1649026059789003325, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 936754350}
+    - target: {fileID: 1649026059789003325, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeSFXVolume
+      objectReference: {fileID: 0}
+    - target: {fileID: 1649026059789003325, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MainMenuButtons, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1649026059789003325, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3902851728196374738, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3902851728196374738, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3902851728196374738, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4299842039871394444, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 936754350}
+    - target: {fileID: 4299842039871394444, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeBGMVolume
+      objectReference: {fileID: 0}
+    - target: {fileID: 4299842039871394444, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MainMenuButtons, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4299842039871394444, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 5281764488315247174, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 936754350}
+    - target: {fileID: 7659703979268324627, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7659703979268324627, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7871381465459743998, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -2158,6 +2232,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2759281594936055318 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4299842039871394444, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+  m_PrefabInstance: {fileID: 2759281594936055316}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2759281594936055319 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1649026059789003325, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+  m_PrefabInstance: {fileID: 2759281594936055316}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &6145260708904824070

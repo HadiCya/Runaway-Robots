@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using Unity.Services.Leaderboards;
+using UnityEngine.UI;
 
 public class MainMenuButtons : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class MainMenuButtons : MonoBehaviour
     public GameObject settingsMenu;
     private ProfanityList profanityList;
     public TextMeshProUGUI messageBox;
+    public Slider sfxVolumeSlider;
+    public Slider bgmVolumeSlider;
 
     // Start is called before the first frame update
     void Start()
@@ -106,10 +109,30 @@ public class MainMenuButtons : MonoBehaviour
     public async void OpenSettings()
     {
         settingsMenu.SetActive(true);
+        
+        if (PlayerPrefs.HasKey("sfxVolume"))
+        {
+            sfxVolumeSlider.value = PlayerPrefs.GetFloat("sfxVolume");
+        }
+        if (PlayerPrefs.HasKey("bgmVolume"))
+        {
+            bgmVolumeSlider.value = PlayerPrefs.GetFloat("bgmVolume");
+        }
+
         if (string.Equals(usernameTextbox.text, "Username"))
         {
             usernameTextbox.text = await leaderboard.GetName();
         }
+    }
+
+    public void ChangeSFXVolume()
+    {
+        PlayerPrefs.SetFloat("sfxVolume", sfxVolumeSlider.value);
+    }
+
+    public void ChangeBGMVolume()
+    {
+        PlayerPrefs.SetFloat("bgmVolume", bgmVolumeSlider.value);
     }
 
     public void CloseSettings()
