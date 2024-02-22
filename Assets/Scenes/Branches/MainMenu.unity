@@ -1256,6 +1256,7 @@ MonoBehaviour:
   messageBox: {fileID: 2759281594936055317}
   sfxVolumeSlider: {fileID: 2759281594936055319}
   bgmVolumeSlider: {fileID: 2759281594936055318}
+  mobileControlsButton: {fileID: 2759281594936055320}
 --- !u!114 &936754351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2202,6 +2203,22 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 936754350}
+    - target: {fileID: 7179921841949812697, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 936754350}
+    - target: {fileID: 7179921841949812697, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeMobileControls
+      objectReference: {fileID: 0}
+    - target: {fileID: 7179921841949812697, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MainMenuButtons, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7179921841949812697, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7659703979268324627, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -2254,6 +2271,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2759281594936055320 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7179921841949812697, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+  m_PrefabInstance: {fileID: 2759281594936055316}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &6145260708904824070

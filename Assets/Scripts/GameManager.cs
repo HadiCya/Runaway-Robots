@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using static UnityEditor.Progress;
@@ -42,6 +43,9 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI bombCountText;
     private TextMeshProUGUI levelCompleteText;
 
+    private GameObject joystick;
+    private GameObject buttons;
+
     public bool playerMovementDisabled = false;
 
     public GameObject audioGameObject;
@@ -69,6 +73,24 @@ public class GameManager : MonoBehaviour
 
         audioSources = audioGameObject.GetComponents<AudioSource>();
         InitializeSoundEffects();
+
+        joystick = GameObject.Find("Joystick");
+        buttons = GameObject.Find("ButtonHolder");
+        if (PlayerPrefs.HasKey("mobileControls"))
+        {
+            if (string.Equals(PlayerPrefs.GetString("mobileControls"), "joystick"))
+            {
+                buttons.SetActive(false);
+            }
+            else
+            {
+                joystick.SetActive(false);
+            }
+        }
+        else
+        {
+            joystick.SetActive(false);
+        }
 
         bombUiImage = GameObject.Find("Canvas").transform.GetChild(0).GetComponent<UnityEngine.UI.Image>();
         bombCountText = GameObject.Find("Canvas").transform.GetChild(1).GetComponent<TextMeshProUGUI>();

@@ -21,6 +21,7 @@ public class MainMenuButtons : MonoBehaviour
     public TextMeshProUGUI messageBox;
     public Slider sfxVolumeSlider;
     public Slider bgmVolumeSlider;
+    public Button mobileControlsButton;
 
     // Start is called before the first frame update
     void Start()
@@ -118,6 +119,23 @@ public class MainMenuButtons : MonoBehaviour
         {
             bgmVolumeSlider.value = PlayerPrefs.GetFloat("bgmVolume");
         }
+        
+        if (PlayerPrefs.HasKey("mobileControls"))
+        {
+            if (string.Equals(PlayerPrefs.GetString("mobileControls"), "joystick"))
+            {
+                mobileControlsButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Joystick\n(Change)";
+            }
+            else
+            {
+                mobileControlsButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Buttons\n(Change)";
+            }
+        }
+        else
+        {
+            PlayerPrefs.SetString("mobileControls", "buttons");
+            mobileControlsButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Buttons\n(Change)";
+        }
 
         if (string.Equals(usernameTextbox.text, "Username"))
         {
@@ -133,6 +151,20 @@ public class MainMenuButtons : MonoBehaviour
     public void ChangeBGMVolume()
     {
         PlayerPrefs.SetFloat("bgmVolume", bgmVolumeSlider.value);
+    }
+
+    public void ChangeMobileControls()
+    {
+        if (string.Equals(PlayerPrefs.GetString("mobileControls"), "joystick"))
+        {
+            PlayerPrefs.SetString("mobileControls", "buttons");
+            mobileControlsButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Buttons\n(Change)";
+        }
+        else
+        {            
+            PlayerPrefs.SetString("mobileControls", "joystick");
+            mobileControlsButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Joystick\n(Change)";
+        }
     }
 
     public void CloseSettings()
