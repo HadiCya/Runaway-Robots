@@ -11,6 +11,7 @@ public class MainMenuButtons : MonoBehaviour
 {
     private Leaderboard leaderboard;
     public TMP_InputField usernameInputfield;
+    public Button usernameButton;
     public TextMeshProUGUI usernameTextbox;
     public GameObject leaderboardDisplay;
     public TextMeshProUGUI[] leaderboardNames;
@@ -35,7 +36,12 @@ public class MainMenuButtons : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //developer secret (remove later)
+        if (Input.GetKey(KeyCode.P))
+        {
+            PlayerPrefs.DeleteKey("nameChanged");
+            Debug.Log("reset");
+        }
     }
 
     public void StartGame()
@@ -75,10 +81,16 @@ public class MainMenuButtons : MonoBehaviour
             return;
         }
 
-        //TODO: limit it to once per month or just once period?
-
         await leaderboard.UpdateName(usernameInputfield.text);
-        usernameInputfield.text = string.Empty;
+
+        if (PlayerPrefs.GetString("nameChanged") == "true")
+        {
+            messageBox.text = "You can no longer change your name";
+            usernameInputfield.text = string.Empty;
+            usernameInputfield.interactable = false;
+            usernameButton.interactable = false;
+        }
+
         GetName();
     }
 
@@ -118,6 +130,16 @@ public class MainMenuButtons : MonoBehaviour
         if (PlayerPrefs.HasKey("bgmVolume"))
         {
             bgmVolumeSlider.value = PlayerPrefs.GetFloat("bgmVolume");
+        }
+        if (PlayerPrefs.HasKey("nameChanged"))
+        {
+            if (PlayerPrefs.GetString("nameChanged") == "true")
+            {
+                messageBox.text = string.Empty;
+                usernameInputfield.text = string.Empty;
+                usernameInputfield.interactable = false;
+                usernameButton.interactable = false;
+            }
         }
         
         if (PlayerPrefs.HasKey("mobileControls"))

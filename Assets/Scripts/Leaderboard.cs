@@ -128,6 +128,7 @@ public class Leaderboard : MonoBehaviour
         {
             var nameResponse = await AuthenticationService.Instance.UpdatePlayerNameAsync(name);
             Debug.Log(JsonConvert.SerializeObject(nameResponse));
+            PlayerPrefs.SetString("nameChanged", "true");
             return nameResponse;
         }
         catch (Exception e)
@@ -139,6 +140,13 @@ public class Leaderboard : MonoBehaviour
 
     public async Task<string> GetName()
     {
+        //Check for cached name
+        if (AuthenticationService.Instance.PlayerName != null)
+        {
+            Debug.Log("Name found yay");
+            return AuthenticationService.Instance.PlayerName;
+        }
+
         try
         {
             var nameResponse = await AuthenticationService.Instance.GetPlayerNameAsync();
