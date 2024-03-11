@@ -4,9 +4,18 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
+public enum SoundEffect
+{
+    cancelSound,
+    deathSound,
+    electricSound,
+    tickSound,
+    bombSound
+}
 public class GameManager : MonoBehaviour
 {
     public BoardItem[,] gameBoard;
@@ -33,11 +42,19 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI bombCountText;
     private TextMeshProUGUI levelCompleteText;
 
+    private GameObject joystick;
+    private GameObject buttons;
+
     public bool playerMovementDisabled = false;
 
-    public AudioSource audioSource;
-    public AudioClip cancelSound, deathSound, electricSound, tickSound, bombSound;
+    public GameObject audioGameObject;
+    public GameObject musicGameObject;
+    //Index 0: cancelSound; 1: deathSound; 2: electricSound; 3: tickSound; 4: bombSound
+    private AudioSource[] audioSources;
+    private Dictionary<SoundEffect, AudioSource> soundEffectDictionary = new();
     public MusicSpeedController musicSpeedController;
+    private float sfxVolume;
+    private float bgmVolume;
 
     //Board size stuff
     public GameObject grid;
@@ -52,7 +69,28 @@ public class GameManager : MonoBehaviour
     {
         gameBoard = new BoardItem[board_size, board_size];
         PrintBoard();
-        
+
+        audioSources = audioGameObject.GetComponents<AudioSource>();
+        InitializeSoundEffects();
+
+        joystick = GameObject.Find("Joystick");
+        buttons = GameObject.Find("ButtonHolder");
+        if (PlayerPrefs.HasKey("mobileControls"))
+        {
+            if (string.Equals(PlayerPrefs.GetString("mobileControls"), "joystick"))
+            {
+                buttons.SetActive(false);
+            }
+            else
+            {
+                joystick.SetActive(false);
+            }
+        }
+        else
+        {
+            joystick.SetActive(false);
+        }
+
         bombUiImage = GameObject.Find("Canvas").transform.GetChild(0).GetComponent<UnityEngine.UI.Image>();
         bombCountText = GameObject.Find("Canvas").transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         levelCompleteText = GameObject.Find("Canvas").transform.GetChild(2).GetComponent<TextMeshProUGUI>();
@@ -62,6 +100,32 @@ public class GameManager : MonoBehaviour
         robotsDefeated = 0;
         levelCount = 0;
         GenerateLevel();
+    }
+
+    private void InitializeSoundEffects()
+    {
+        SoundEffect[] soundEffects = (SoundEffect[])System.Enum.GetValues(typeof(SoundEffect));
+        for (int i = 0; i < soundEffects.Length; i++)
+        {
+            soundEffectDictionary[soundEffects[i]] = audioSources[i];
+            if (PlayerPrefs.HasKey("sfxVolume"))
+            {
+                audioSources[i].volume = PlayerPrefs.GetFloat("sfxVolume");
+            }
+            else
+            {
+                audioSources[i].volume = 1;
+            }
+        }
+
+        if (PlayerPrefs.HasKey("bgmVolume"))
+        {
+            musicGameObject.GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("bgmVolume");
+        }
+        else
+        {
+            musicGameObject.GetComponent<AudioSource>().volume = 1;
+        }
     }
 
     private void PreSetLevels() {
@@ -215,7 +279,7 @@ public class GameManager : MonoBehaviour
     //Check for robots adjacent to player and destroy them
     public void SpawnBombs(int x, int y)
     {
-        PlaySound(bombSound);
+        PlaySound(SoundEffect.bombSound);
         //Top-left
         if (x - 1 >= 0 && y - 1 >= 0 && gameBoard[x - 1, y - 1] != null && gameBoard[x - 1, y - 1].type == "robot")
         {
@@ -291,7 +355,7 @@ public class GameManager : MonoBehaviour
         //If out of bounds: don't move 
         if (item2X < 0 || item2X > board_size - 1 || item2Y < 0 || item2Y > board_size - 1)
         {
-            PlaySound(cancelSound);
+            PlaySound(SoundEffect.cancelSound);
             return 0;
         }
         
@@ -306,22 +370,22 @@ public class GameManager : MonoBehaviour
             //If moving into a Wall: don't
             if (gameBoard[item2X, item2Y].type == "wall")
             {
-                PlaySound(cancelSound);
+                PlaySound(SoundEffect.cancelSound);
                 return 0;
             }
             //If moving into a Robot or Pit: die
             else if ((gameBoard[item2X, item2Y].type == "robot") || (gameBoard[item2X, item2Y].type == "pit"))
             {
                 //End game
-                PlaySound(deathSound);
+                PlaySound(SoundEffect.deathSound);
                 Invoke(nameof(LoadEndScreen), 2);
                 return 2;
             }
             //If moving into an Electric Fence: die and destroy the fence
             else if (gameBoard[item2X, item2Y].type == "electric_fence")
             {
-                PlaySound(electricSound);
-                PlaySound(deathSound);
+                PlaySound(SoundEffect.electricSound);
+                PlaySound(SoundEffect.deathSound);
                 //Destroy other item collided with
                 gameBoard[item2X, item2Y].DestroyItem();
                 //End game
@@ -345,7 +409,7 @@ public class GameManager : MonoBehaviour
             //If moving into the Player: kill them
             else if (gameBoard[item2X, item2Y].type == "player")
             {
-                PlaySound(deathSound);
+                PlaySound(SoundEffect.deathSound);
                 //Destroy other item collided with
                 gameBoard[item2X, item2Y].DestroyItem();
                 //End game
@@ -355,7 +419,7 @@ public class GameManager : MonoBehaviour
             //If moving into an Electric Fence, die and destroy the fence
             else if (gameBoard[item2X, item2Y].type == "electric_fence")
             {
-                PlaySound(electricSound);
+                PlaySound(SoundEffect.electricSound);
                 //Destroy other item collided with
                 gameBoard[item2X, item2Y].DestroyItem();
                 return 4;
@@ -363,7 +427,7 @@ public class GameManager : MonoBehaviour
         }
         else if (gameBoard[item1X, item1Y].type == "robot" && (gameBoard[item2X, item2Y] == null))
         {
-            PlaySound(tickSound);
+            PlaySound(SoundEffect.tickSound);
         }
         //No obstacle to collide with, so move along
         return 1;
@@ -375,7 +439,7 @@ public class GameManager : MonoBehaviour
     //  1 == empty or robot
     public int CheckIfEmpty(int x, int y)
     {
-        PlaySound(bombSound);
+        PlaySound(SoundEffect.bombSound);
         if (!(gameBoard[x, y] == null))
         {
             if (gameBoard[x, y].type == "wall")
@@ -567,17 +631,20 @@ public class GameManager : MonoBehaviour
         while (index < count)
         {
             spin_count += 1;
-            if (spin_count > 500)
+            if (spin_count > 5000)
             {
                 print("ERROR IN LEVEL GENERATION");
                 break;
             }
             int randrow = UnityEngine.Random.Range(1, board_size);
             int randcol = UnityEngine.Random.Range(1, board_size);
-            if (gameBoard[randrow, randcol] == null && !PlayerInProximity(randrow, randcol, 3) && CheckIfLegal(randrow, randcol, levelMap))
+            if (gameBoard[randrow, randcol] == null && (item.type != "robot" || !PlayerInProximity(randrow, randcol, 3)) && (item.type == "robot" || CheckIfLegal(randrow, randcol, levelMap)))
             {
                 PlaceBoardItem(item, randrow, randcol);
-                levelMap[randrow, randcol] = 1;
+                if (item.type != "robot")
+                {
+                    levelMap[randrow, randcol] = 1;
+                }
                 index++;
             }
         }
@@ -684,10 +751,17 @@ public class GameManager : MonoBehaviour
         cam.orthographicSize += (amount * camSizeAmount);
     }
 
-    void PlaySound(AudioClip clip)
+    void PlaySound(SoundEffect effect)
     {
-        audioSource.clip = clip;
-        audioSource.Play();
+        // Try to get the AudioSource from the dictionary and play it if found
+        if (soundEffectDictionary.TryGetValue(effect, out AudioSource source))
+        {
+            source.Play();
+        }
+        else
+        {
+            Debug.LogError($"No AudioSource assigned for the sound effect: {effect}");
+        }
     }
 
     private void LoadEndScreen()
