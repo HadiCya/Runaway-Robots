@@ -75,7 +75,7 @@ public class Leaderboard : MonoBehaviour
         {
             var scoreResponse = await LeaderboardsService.Instance.GetPlayerScoreAsync(LeaderboardId);
             Debug.Log(JsonConvert.SerializeObject(scoreResponse));
-            return ($"{scoreResponse.Rank + 1}. {scoreResponse.PlayerName}\t{scoreResponse.Score}");
+            return ($"{scoreResponse.Rank + 1}. {scoreResponse.PlayerName}\t {scoreResponse.Score}");
         }
         catch (Exception e)
         {

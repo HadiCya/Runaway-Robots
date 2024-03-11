@@ -23,6 +23,7 @@ public class MainMenuButtons : MonoBehaviour
     public Slider sfxVolumeSlider;
     public Slider bgmVolumeSlider;
     public Button mobileControlsButton;
+    public GameObject infoMenu;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +32,7 @@ public class MainMenuButtons : MonoBehaviour
         usernameInputfield.characterLimit = 20;
         leaderboardDisplay.SetActive(false);
         settingsMenu.SetActive(false);
+        infoMenu.SetActive(false);
     }
 
     // Update is called once per frame
@@ -192,5 +194,15 @@ public class MainMenuButtons : MonoBehaviour
     public void CloseSettings()
     {
         settingsMenu.SetActive(false);
+    }
+
+    public void OpenInfo()
+    {
+        infoMenu.SetActive(true);
+    }
+
+    public void CloseInfo()
+    {
+        infoMenu.SetActive(false);
     }
 }
