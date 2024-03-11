@@ -1350,6 +1350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83aeee0ab248a234c9f2e3dbf6f50681, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dsaNotifications: []
 --- !u!4 &836279204
 Transform:
   m_ObjectHideFlags: 0
@@ -1647,6 +1648,8 @@ MonoBehaviour:
   bgmVolumeSlider: {fileID: 2759281594936055318}
   mobileControlsButton: {fileID: 2759281594936055320}
   infoMenu: {fileID: 335028279}
+  dsaMenu: {fileID: 2759281594936055321}
+  dsaNotificationBox: {fileID: 1762381838}
 --- !u!114 &936754351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2376,6 +2379,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1762381838 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6678122107011735360, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+  m_PrefabInstance: {fileID: 2759281594936055316}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1904891431 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5281764488315247174, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
@@ -2629,6 +2643,14 @@ PrefabInstance:
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 1705213991889657775, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 936754350}
+    - target: {fileID: 1705213991889657775, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OpenDSAPage
+      objectReference: {fileID: 0}
     - target: {fileID: 3902851728196374738, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -2677,6 +2699,22 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 936754350}
+    - target: {fileID: 7109723689454290403, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 936754350}
+    - target: {fileID: 7109723689454290403, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CloseDSAPage
+      objectReference: {fileID: 0}
+    - target: {fileID: 7109723689454290403, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MainMenuButtons, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7109723689454290403, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7179921841949812697, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -2758,6 +2796,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2759281594936055321 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6951085344704897466, guid: f86300499d7673a4cb4a185fa9d61cbc, type: 3}
+  m_PrefabInstance: {fileID: 2759281594936055316}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6145260708904824070
 PrefabInstance:
   m_ObjectHideFlags: 0

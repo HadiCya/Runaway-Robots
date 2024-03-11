@@ -66,9 +66,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: Look out, the robots you built have turned against you! Luckily, they aren't
-    very intelligent, so they will always try to run directly towards you. Lead them
+    very intelligent, so they will always try to run directly towards you. Lure them
     into pits and electric fences to destroy them and escape! If you find yourself
-    surrounded, use your bomb to take out any robots next to you!
+    surrounded, use your bomb to take out all robots next to you!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -248,7 +248,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 260, y: -135.06142}
+  m_AnchoredPosition: {x: 260, y: -150}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4167632893680373342

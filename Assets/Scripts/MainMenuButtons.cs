@@ -24,6 +24,8 @@ public class MainMenuButtons : MonoBehaviour
     public Slider bgmVolumeSlider;
     public Button mobileControlsButton;
     public GameObject infoMenu;
+    public GameObject dsaMenu;
+    public TextMeshProUGUI dsaNotificationBox;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +35,7 @@ public class MainMenuButtons : MonoBehaviour
         leaderboardDisplay.SetActive(false);
         settingsMenu.SetActive(false);
         infoMenu.SetActive(false);
+        dsaMenu.SetActive(false);
     }
 
     // Update is called once per frame
@@ -204,5 +207,16 @@ public class MainMenuButtons : MonoBehaviour
     public void CloseInfo()
     {
         infoMenu.SetActive(false);
+    }
+
+    public void OpenDSAPage()
+    {
+        dsaMenu.SetActive(true);
+        dsaNotificationBox.text = leaderboard.GetNotifications();
+    }
+
+    public void CloseDSAPage()
+    {
+        dsaMenu.SetActive(false);
     }
 }
