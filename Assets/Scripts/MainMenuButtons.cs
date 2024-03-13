@@ -209,10 +209,10 @@ public class MainMenuButtons : MonoBehaviour
         infoMenu.SetActive(false);
     }
 
-    public void OpenDSAPage()
+    public async void OpenDSAPage()
     {
         dsaMenu.SetActive(true);
-        dsaNotificationBox.text = leaderboard.GetNotifications();
+        dsaNotificationBox.text = await leaderboard.GetNotifications();
     }
 
     public void CloseDSAPage()

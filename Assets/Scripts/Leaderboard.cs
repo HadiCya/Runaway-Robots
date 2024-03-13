@@ -20,6 +20,7 @@ public class Leaderboard : MonoBehaviour
 
     private long lastNotification;
     public List<String> dsaNotifications;
+    private Notification lastAlert;
 
     private async void Awake()
     {
@@ -38,8 +39,6 @@ public class Leaderboard : MonoBehaviour
 
     async Task SignInAnonymously()
     {
-        List<Notification> notifications = null;
-
         AuthenticationService.Instance.SignedIn += () =>
         {
             Debug.Log("Signed in as: " + AuthenticationService.Instance.PlayerId);
@@ -53,51 +52,10 @@ public class Leaderboard : MonoBehaviour
         try
         {
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
-
-            // Verify the LastNotificationDate
-            var lastNotificationDate = AuthenticationService.Instance.LastNotificationDate;
-            long storedNotificationDate = GetLastNotificationReadDate();
-            // Verify if the LastNotification date is available and greater than the last read notifications
-            if (lastNotificationDate != null && long.Parse(lastNotificationDate) > storedNotificationDate)
-            {
-                // Retrieve the notifications from the backend
-                notifications = await AuthenticationService.Instance.GetNotificationsAsync();
-            }
-
-        }
-        catch (AuthenticationException e)
-        {
-            // Read notifications from the banned player exception
-            notifications = e.Notifications;
-            // Notify the player with the proper error message
-            Debug.LogException(e);
         }
         catch (Exception e)
         {
             Debug.LogException(e);
-        }
-
-        if (notifications != null)
-        {
-            // Display notifications
-            foreach (var alert in notifications)
-            {
-                string thisNotification = string.Empty;
-                thisNotification += alert.CreatedAt;
-                thisNotification += alert.Type;
-                thisNotification += alert.Id;
-                thisNotification += alert.CaseId;
-                thisNotification += alert.ProjectId;
-                thisNotification += alert.PlayerId;
-                thisNotification += alert.Message;
-                dsaNotifications.Add(thisNotification);
-
-                OnNotificationRead(alert);
-            }
-        }
-        else
-        {
-            Debug.Log("No notifications found");
         }
     }
 
@@ -208,8 +166,55 @@ public class Leaderboard : MonoBehaviour
     }
 
     //DSA NOTIFICATION STUFF
-    public string GetNotifications()
+    public async Task<string> GetNotifications()
     {
+        List<Notification> notifications = null;
+        
+        try
+        {
+            // Verify the LastNotificationDate
+            var lastNotificationDate = AuthenticationService.Instance.LastNotificationDate;
+            long storedNotificationDate = GetLastNotificationReadDate();
+            // Verify if the LastNotification date is available and greater than the last read notifications
+            if (lastNotificationDate != null && long.Parse(lastNotificationDate) > storedNotificationDate)
+            {
+                // Retrieve the notifications from the backend
+                notifications = await AuthenticationService.Instance.GetNotificationsAsync();
+            }
+        }
+        catch (AuthenticationException e)
+        {
+            // Read notifications from the banned player exception
+            notifications = e.Notifications;
+            // Notify the player with the proper error message
+            Debug.LogException(e);
+        }
+
+        if (notifications != null)
+        {
+            // Display notifications
+            foreach (var alert in notifications)
+            {
+                string thisNotification = string.Empty;
+                thisNotification += alert.CreatedAt;
+                thisNotification += alert.Type;
+                thisNotification += alert.Id;
+                thisNotification += alert.CaseId;
+                thisNotification += alert.ProjectId;
+                thisNotification += alert.PlayerId;
+                thisNotification += alert.Message;
+                dsaNotifications.Add(thisNotification);
+
+                lastAlert = alert;
+                OnNotificationRead(alert);
+            }
+        }
+        else
+        {
+            Debug.Log("No notifications found");
+        }
+
+
         string allNotifications = string.Empty;
         foreach (string notification in dsaNotifications)
         {
