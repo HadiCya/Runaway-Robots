@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using static UnityEditor.Progress;
 
 public enum SoundEffect
 {
@@ -64,6 +65,11 @@ public class GameManager : MonoBehaviour
     private readonly float camPosAmount = 0.555f;
     private readonly float camSizeAmount = 0.665f;
 
+    public GameObject respawnMenu;
+    private bool respawnAvailable;
+    private int respawnAtX;
+    private int respawnAtY;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -99,6 +105,8 @@ public class GameManager : MonoBehaviour
         robotCount = 0;
         robotsDefeated = 0;
         levelCount = 0;
+        respawnAvailable = true;
+        respawnMenu.SetActive(false);
         GenerateLevel();
     }
 
@@ -221,61 +229,6 @@ public class GameManager : MonoBehaviour
         gameBoard[x, y] = null;
     }
 
-    //DEPRECATED
-    //Spawn Bomb powerups at 3x3 grid around player's position
-    public void SpawnBomb(int x, int y)
-    {
-        //Top-left
-        if (x - 1 >= 0 && y - 1 >= 0 && CheckIfEmpty(x - 1, y - 1) == 1)
-        {
-            PlaceBoardItem(bomb, x - 1, y - 1);
-        }
-        //Top-middle
-        if (y - 1 >= 0 && CheckIfEmpty(x, y - 1) == 1)
-        {
-            PlaceBoardItem(bomb, x, y - 1);
-        }
-        //Top-right
-        if (x + 1 <= board_size - 1 && y - 1 >= 0 && CheckIfEmpty(x + 1, y - 1) == 1)
-        {
-            PlaceBoardItem(bomb, x + 1, y - 1);
-        }
-        //Middle-Left
-        if (x - 1 >= 0 && CheckIfEmpty(x - 1, y) == 1)
-        {
-            PlaceBoardItem(bomb, x - 1, y);
-        }
-        //Middle-Middle
-        //PlaceBoardItem(bomb, x, y);   //Dont place it on player idk depends on what we wanna do
-        //Middle-Right
-        if (x + 1 <= board_size - 1 && CheckIfEmpty(x + 1, y) == 1)
-        {
-            PlaceBoardItem(bomb, x + 1, y);
-        }
-        //Bottom-Left
-        if (x - 1 >= 0 && y + 1 <= board_size - 1 && CheckIfEmpty(x - 1, y + 1) == 1)
-        {
-            PlaceBoardItem(bomb, x - 1, y + 1);
-        }
-        //Bottom-Middle
-        if (y + 1 <= board_size - 1 && CheckIfEmpty(x, y + 1) == 1)
-        {
-            PlaceBoardItem(bomb, x, y + 1);
-        }
-        //Bottom-Right
-        if (x + 1 <= board_size - 1 && y + 1 <= board_size - 1 && CheckIfEmpty(x + 1, y + 1) == 1)
-        {
-            PlaceBoardItem(bomb, x + 1, y + 1);
-        }
-
-        bombCount--;
-        bombCountText.text = bombCount.ToString();
-        bombCooldown = bombInterval;
-        bombUiImage.color = Color.gray; //Gray out bomb button (make it look better later)
-        // *Disable bomb UI*
-    }
-
-    //NEW
     //Check for robots adjacent to player and destroy them
     public void SpawnBombs(int x, int y)
     {
@@ -378,7 +331,9 @@ public class GameManager : MonoBehaviour
             {
                 //End game
                 PlaySound(SoundEffect.deathSound);
-                Invoke(nameof(LoadEndScreen), 2);
+                respawnAtX = item1X;
+                respawnAtY = item1Y;
+                Invoke(nameof(DetermineEndPath), 1);
                 return 2;
             }
             //If moving into an Electric Fence: die and destroy the fence
@@ -389,7 +344,9 @@ public class GameManager : MonoBehaviour
                 //Destroy other item collided with
                 gameBoard[item2X, item2Y].DestroyItem();
                 //End game
-                Invoke(nameof(LoadEndScreen), 2);
+                respawnAtX = item1X;
+                respawnAtY = item1Y;
+                Invoke(nameof(DetermineEndPath), 1);
                 return 4;
             }
         }
@@ -413,7 +370,9 @@ public class GameManager : MonoBehaviour
                 //Destroy other item collided with
                 gameBoard[item2X, item2Y].DestroyItem();
                 //End game
-                Invoke(nameof(LoadEndScreen), 2);
+                respawnAtX = item2X;
+                respawnAtY = item2Y;
+                Invoke(nameof(DetermineEndPath), 1);
                 return 3;
             }
             //If moving into an Electric Fence, die and destroy the fence
@@ -486,17 +445,6 @@ public class GameManager : MonoBehaviour
             board += "\n";
         }
         Debug.Log(board);
-    }
-
-    //Wasn't working so is retired for now
-    public void CheckForRobots()
-    {
-        if (!GameObject.FindGameObjectWithTag("Robot"))
-        {
-            Debug.Log("All gone!");
-            GenerateLevel();
-            //LoadNextLevel();
-        }
     }
 
     //Add to robot count when robot is spawned
@@ -764,7 +712,43 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void LoadEndScreen()
+    private void DetermineEndPath()
+    {
+        if (respawnAvailable)
+        {
+            respawnAvailable = false;
+            respawnMenu.SetActive(true);            
+        }
+        else
+        {
+            Invoke(nameof(LoadEndScreen), 2);
+        }
+    }
+
+    private void RespawnPlayer()
+    {
+        SpawnBombs(respawnAtX, respawnAtY);
+        AddBomb();
+        if (!(gameBoard[respawnAtX, respawnAtY] == null))
+        {
+            gameBoard[respawnAtX, respawnAtY].DestroyItem();
+        }
+        PlaceBoardItem(player, respawnAtX, respawnAtY);
+        Robot[] robots = GameObject.FindObjectsOfType<Robot>();
+        foreach (Robot robot in robots)
+        {
+            robot.ResetRobot();
+        }
+    }
+
+    //Watch Ad button calls this
+    public void ContinuePlaying()
+    {
+        respawnMenu.SetActive(false);
+        Invoke(nameof(RespawnPlayer), 1);
+    }
+
+    public void LoadEndScreen()
     {
         SceneManager.LoadScene("EndScreen");
     }

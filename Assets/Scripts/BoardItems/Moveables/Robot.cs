@@ -13,15 +13,9 @@ public class Robot : Moveable
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        StartCoroutine(MoveRobotCoroutine());
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        ResetRobot();
         gameManager.AddRobotCount();
-        moveInterval = 0.5f - GameManager.levelCount * 0.015f;
-        if (moveInterval < 0.18f)
-        {
-            moveInterval = 0.18f;
-        }
+        StartCoroutine(MoveRobotCoroutine());
     }
 
     // Update is called once per frame
@@ -119,6 +113,17 @@ public class Robot : Moveable
         {
             MoveItem(0, 1);
             return;
+        }
+    }
+
+    public void ResetRobot()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        moveInterval = 0.5f - GameManager.levelCount * 0.015f;
+        if (moveInterval < 0.18f)
+        {
+            moveInterval = 0.18f;
         }
     }
 
