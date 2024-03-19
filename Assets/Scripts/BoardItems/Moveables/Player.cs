@@ -14,7 +14,7 @@ public class Player : Moveable
     private ParticleSystem bombParticles;
     [SerializeField]
     private ParticleSystem walkParticles;
-
+    private GameObject model;
 
 
     private bool movementDisabled = false;
@@ -40,6 +40,7 @@ public class Player : Moveable
 
     void Start()
     {
+        model = transform.GetChild(0).gameObject;
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         playerJoystick = new PlayerJoystick();
         playerJoystick.Enable();
@@ -272,6 +273,7 @@ public class Player : Moveable
 
             if (base.collisionResult == 1 || base.collisionResult == 3)
             {
+                WalkEffect(xMove, yMove);
                 movementDisabled = true;
                 moveCooldown = moveInterval;
             }
@@ -282,6 +284,7 @@ public class Player : Moveable
         }
     }
 
+  
     public void MoveFromButton(int x, int y)
     {
         if (!gameManager.playerMovementDisabled)
@@ -289,7 +292,7 @@ public class Player : Moveable
             MoveItem(x, y);
         }
     }
-
+  
     private void SetMovementBuffer(int x, int y)
     {
         bufferX = x;
@@ -312,7 +315,27 @@ public class Player : Moveable
     }
 
     private void BombEffect() {
-
         Instantiate(bombParticles,transform);
     }
+
+    private void WalkEffect(int xMove, int yMove)
+    {
+        if (xMove == 1) {
+            model.transform.eulerAngles = new Vector3(90,-90,90);
+        }
+        if (xMove == -1) {
+            model.transform.eulerAngles = new Vector3(-90, -90, 90);
+        }
+        if (yMove == 1)
+        {
+            model.transform.eulerAngles = new Vector3(0, -90, 90);
+        }
+        if (yMove == -1)
+        {
+            model.transform.eulerAngles = new Vector3(180, -90, 90);
+        }
+        Instantiate(walkParticles, model.transform);
+
+    }
+
 }
