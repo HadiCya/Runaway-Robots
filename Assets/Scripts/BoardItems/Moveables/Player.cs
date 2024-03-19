@@ -10,6 +10,13 @@ using UnityEngine.UIElements;
 
 public class Player : Moveable
 {
+    [SerializeField]
+    private ParticleSystem bombParticles;
+    [SerializeField]
+    private ParticleSystem walkParticles;
+
+
+
     private bool movementDisabled = false;
     private float moveCooldown = 0f;
     private readonly float moveInterval = 0.15f;
@@ -250,6 +257,7 @@ public class Player : Moveable
         //Spawn Bomb
         if (Input.GetKeyDown(KeyCode.Space) && gameManager.CanUseBomb())
         {
+            BombEffect();
             movementDisabled = true;
             moveCooldown = moveInterval;
             gameManager.SpawnBombs(xPos, yPos);
@@ -301,5 +309,10 @@ public class Player : Moveable
             SetMovementBuffer(0, 0);
             useBuffer = true;
         }
+    }
+
+    private void BombEffect() {
+
+        Instantiate(bombParticles,transform);
     }
 }
