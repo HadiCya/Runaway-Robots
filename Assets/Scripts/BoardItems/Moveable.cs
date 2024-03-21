@@ -7,11 +7,13 @@ public class Moveable : BoardItem
     protected float moveDistance = 1.11f;
     protected Vector2 moveDir;
     protected int collisionResult;
-
+    [SerializeField] private ParticleSystem walkParticles;
+    private GameObject model;
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
-        
+        model = transform.GetChild(0).gameObject;
+        print("i ran");
     }
 
     // Update is called once per frame
@@ -86,6 +88,8 @@ public class Moveable : BoardItem
         //Safe to move
         else if (collisionResult == 1 || collisionResult == 3)
         {
+
+            WalkEffect(xMove, yMove);
             gameManager.ClearPosition(xPos, yPos);
             xPos = xNew;
             yPos = yNew;
@@ -98,5 +102,26 @@ public class Moveable : BoardItem
         {
             DestroyItem();
         }
+    }
+    private void WalkEffect(int xMove, int yMove)
+    {
+        if (xMove == 1)
+        {
+            model.transform.eulerAngles = new Vector3(90, -90, 90);
+        }
+        if (xMove == -1)
+        {
+            model.transform.eulerAngles = new Vector3(-90, -90, 90);
+        }
+        if (yMove == 1)
+        {
+            model.transform.eulerAngles = new Vector3(0, -90, 90);
+        }
+        if (yMove == -1)
+        {
+            model.transform.eulerAngles = new Vector3(180, -90, 90);
+        }
+        Instantiate(walkParticles, model.transform);
+
     }
 }

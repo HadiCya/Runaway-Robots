@@ -25,14 +25,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2115146770042417853}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.35225174, y: 0.16879973, z: -0.26270765, w: 0.8822756}
-  m_LocalPosition: {x: -4.8293424, y: -5.328763, z: -6.9485073}
+  m_LocalRotation: {x: -0.30083603, y: 0.06282562, z: -0.04404066, w: 0.9505846}
+  m_LocalPosition: {x: -1.4594017, y: -5.6640644, z: -8.111012}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8875213543839464151}
   m_Father: {fileID: 7236491058551848840}
-  m_LocalEulerAnglesHint: {x: -147.8, y: -145.2, z: 136.5}
+  m_LocalEulerAnglesHint: {x: -145.5, y: -169.8, z: 171.52}
 --- !u!114 &1343407435899965826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,8 +283,8 @@ MonoBehaviour:
   xPos: 4
   yPos: 4
   type: player
-  bombParticles: {fileID: 1436232743933183669, guid: 2094903a2b8d5784a93f7cbccca0b7ef, type: 3}
   walkParticles: {fileID: 6320776682832261543, guid: 8a10bbec04671a745abcaac8953e155f, type: 3}
+  bombParticles: {fileID: 1436232743933183669, guid: 2094903a2b8d5784a93f7cbccca0b7ef, type: 3}
 --- !u!1001 &3587542959801691466
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -10,11 +10,7 @@ using UnityEngine.UIElements;
 
 public class Player : Moveable
 {
-    [SerializeField]
-    private ParticleSystem bombParticles;
-    [SerializeField]
-    private ParticleSystem walkParticles;
-    private GameObject model;
+    [SerializeField] private ParticleSystem bombParticles;
 
 
     private bool movementDisabled = false;
@@ -38,9 +34,9 @@ public class Player : Moveable
     private int bufferY;  // y axis input buffer
     private bool useBuffer = true;
 
-    void Start()
+    new void Start()
     {
-        model = transform.GetChild(0).gameObject;
+        base.Start();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         playerJoystick = new PlayerJoystick();
         playerJoystick.Enable();
@@ -273,7 +269,6 @@ public class Player : Moveable
 
             if (base.collisionResult == 1 || base.collisionResult == 3)
             {
-                WalkEffect(xMove, yMove);
                 movementDisabled = true;
                 moveCooldown = moveInterval;
             }
@@ -317,7 +312,7 @@ public class Player : Moveable
     private void BombEffect() {
         Instantiate(bombParticles,transform);
     }
-
+    /*
     private void WalkEffect(int xMove, int yMove)
     {
         if (xMove == 1) {
@@ -337,5 +332,6 @@ public class Player : Moveable
         Instantiate(walkParticles, model.transform);
 
     }
+    */
 
 }

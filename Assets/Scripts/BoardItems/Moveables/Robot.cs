@@ -11,8 +11,9 @@ public class Robot : Moveable
     private float moveInterval = 0.5f;
 
     // Start is called before the first frame update
-    void Start()
+    new void Start()
     {
+        base.Start();
         ResetRobot();
         gameManager.AddRobotCount();
         StartCoroutine(MoveRobotCoroutine());
