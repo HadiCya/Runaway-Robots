@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Robot : Moveable
 {
+    
     private GameObject player;
     private float xDistance;
     private float yDistance;

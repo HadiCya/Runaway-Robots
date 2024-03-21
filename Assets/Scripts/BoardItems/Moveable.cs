@@ -8,12 +8,12 @@ public class Moveable : BoardItem
     protected Vector2 moveDir;
     protected int collisionResult;
     [SerializeField] private ParticleSystem walkParticles;
+    [SerializeField] private ParticleSystem deathParticles;
     private GameObject model;
     // Start is called before the first frame update
     public void Start()
     {
         model = transform.GetChild(0).gameObject;
-        print("i ran");
     }
 
     // Update is called once per frame
@@ -123,5 +123,15 @@ public class Moveable : BoardItem
         }
         Instantiate(walkParticles, model.transform);
 
+    }
+    private void DeathEffect()
+    {
+        ParticleSystem myPSystem = Instantiate(deathParticles, transform);
+        myPSystem.transform.SetParent(transform.parent);
+    }
+    private void OnDestroy()
+    {
+        if (!this.gameObject.scene.isLoaded) return;
+        DeathEffect();
     }
 }

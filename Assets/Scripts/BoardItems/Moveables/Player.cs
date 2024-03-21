@@ -34,6 +34,8 @@ public class Player : Moveable
     private int bufferY;  // y axis input buffer
     private bool useBuffer = true;
 
+    private int frameCount = 0;
+
     new void Start()
     {
         base.Start();
@@ -42,6 +44,23 @@ public class Player : Moveable
         playerJoystick.Enable();
     }
 
+    private void ClearDeathEffects() {
+        UnityEngine.Object[] oldDeathEffects = GameObject.FindGameObjectsWithTag("DeathEffect");
+
+        foreach (UnityEngine.Object obj in oldDeathEffects)
+        {
+            Destroy(obj);
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (frameCount == 1)
+        {
+            ClearDeathEffects();
+        }
+        frameCount += 1;
+    }
     // Update is called once per frame
     void Update()
     {

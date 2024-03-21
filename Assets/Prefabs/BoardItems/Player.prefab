@@ -284,6 +284,7 @@ MonoBehaviour:
   yPos: 4
   type: player
   walkParticles: {fileID: 6320776682832261543, guid: 8a10bbec04671a745abcaac8953e155f, type: 3}
+  deathParticles: {fileID: 4851472952052504012, guid: 84bc90e37f8c1344b924cd66e713a140, type: 3}
   bombParticles: {fileID: 1436232743933183669, guid: 2094903a2b8d5784a93f7cbccca0b7ef, type: 3}
 --- !u!1001 &3587542959801691466
 PrefabInstance:

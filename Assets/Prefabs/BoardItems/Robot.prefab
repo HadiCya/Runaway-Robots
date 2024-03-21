@@ -123,6 +123,7 @@ MonoBehaviour:
   yPos: 4
   type: robot
   walkParticles: {fileID: 6320776682832261543, guid: 8a10bbec04671a745abcaac8953e155f, type: 3}
+  deathParticles: {fileID: 5988501393850194394, guid: f5be32d413db5f1469e535b6c65ca322, type: 3}
 --- !u!1001 &6191929439415923316
 PrefabInstance:
   m_ObjectHideFlags: 0
