@@ -657,7 +657,10 @@ public class GameManager : MonoBehaviour
         {
             for (int j = col - 1; j <= col + 1; j++)
             {
-                zeroCount += DFS(i, j, levelMap);
+                if (j == col || i == row)
+                {
+                    zeroCount += DFS(i, j, levelMap);
+                }
             }
         }
 
