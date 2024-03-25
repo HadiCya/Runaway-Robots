@@ -2880,7 +2880,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: c8a99f48f3fbd9746a6edd6808d09f5d, type: 3}
+  m_audioClip: {fileID: 8300000, guid: c57e6c147d39e2043903a5a5ecd09f9b, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -2995,7 +2995,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingPitch: 0.85
   pitchIncrement: 0.05
-  levelThreshold: 5
+  levelThreshold: 2
 --- !u!1 &1181351746
 GameObject:
   m_ObjectHideFlags: 0

@@ -26,6 +26,7 @@ public class MainMenuButtons : MonoBehaviour
     public GameObject infoMenu;
     public GameObject dsaMenu;
     public TextMeshProUGUI dsaNotificationBox;
+    public AudioSource ButtonClick;
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +37,7 @@ public class MainMenuButtons : MonoBehaviour
         settingsMenu.SetActive(false);
         infoMenu.SetActive(false);
         dsaMenu.SetActive(false);
+        ButtonClick.time = 0.11f;
     }
 
     // Update is called once per frame
@@ -51,11 +53,14 @@ public class MainMenuButtons : MonoBehaviour
 
     public void StartGame()
     {
+        ButtonClick.Play();
+
         SceneManager.LoadScene("MovementAndCollisions");
     }
 
     public void QuitGame()
     {
+        ButtonClick.Play();
 #if UNITY_EDITOR
         EditorApplication.ExitPlaymode();
 #else
@@ -70,6 +75,8 @@ public class MainMenuButtons : MonoBehaviour
 
     public async void UpdateName()
     {
+        ButtonClick.Play();
+
         messageBox.text = string.Empty;
         //"The name should not contain any white space and should have a maximum length of 50 characters" - from unity
         if (usernameInputfield.text.Contains(" ") || usernameInputfield.text.Length < 2)
@@ -101,6 +108,8 @@ public class MainMenuButtons : MonoBehaviour
 
     public async void OpenLeaderboard()
     {
+        ButtonClick.Play();
+
         leaderboardDisplay.SetActive(true);
         if (string.Equals(leaderboardNames[0].text, "Loading score..."))
         {
@@ -121,11 +130,15 @@ public class MainMenuButtons : MonoBehaviour
 
     public void CloseLeaderboard()
     {
+        ButtonClick.Play();
+
         leaderboardDisplay.SetActive(false);
     }
 
     public async void OpenSettings()
     {
+        ButtonClick.Play();
+
         settingsMenu.SetActive(true);
         
         if (PlayerPrefs.HasKey("sfxVolume"))
@@ -182,6 +195,8 @@ public class MainMenuButtons : MonoBehaviour
 
     public void ChangeMobileControls()
     {
+        ButtonClick.Play();
+
         if (string.Equals(PlayerPrefs.GetString("mobileControls"), "joystick"))
         {
             PlayerPrefs.SetString("mobileControls", "buttons");
@@ -196,27 +211,37 @@ public class MainMenuButtons : MonoBehaviour
 
     public void CloseSettings()
     {
+        ButtonClick.Play();
+
         settingsMenu.SetActive(false);
     }
 
     public void OpenInfo()
     {
+        ButtonClick.Play();
+
         infoMenu.SetActive(true);
     }
 
     public void CloseInfo()
     {
+        ButtonClick.Play();
+
         infoMenu.SetActive(false);
     }
 
     public async void OpenDSAPage()
     {
+        ButtonClick.Play();
+
         dsaMenu.SetActive(true);
         dsaNotificationBox.text = await leaderboard.GetNotifications();
     }
 
     public void CloseDSAPage()
     {
+        ButtonClick.Play();
+
         dsaMenu.SetActive(false);
     }
 }
