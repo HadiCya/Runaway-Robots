@@ -328,7 +328,7 @@ public class Player : Moveable
         }
     }
 
-    private void BombEffect() {
+    public void BombEffect() {
         Instantiate(bombParticles,transform);
     }
     /*

@@ -586,8 +586,8 @@ public class GameManager : MonoBehaviour
                 print("ERROR IN LEVEL GENERATION");
                 break;
             }
-            int randrow = UnityEngine.Random.Range(1, board_size);
-            int randcol = UnityEngine.Random.Range(1, board_size);
+            int randrow = UnityEngine.Random.Range(0, board_size);
+            int randcol = UnityEngine.Random.Range(0, board_size);
             if (gameBoard[randrow, randcol] == null && (item.type != "robot" || !PlayerInProximity(randrow, randcol, 3)) && (item.type == "robot" || CheckIfLegal(randrow, randcol, levelMap)))
             {
                 PlaceBoardItem(item, randrow, randcol);
@@ -741,6 +741,12 @@ public class GameManager : MonoBehaviour
             gameBoard[respawnAtX, respawnAtY].DestroyItem();
         }
         PlaceBoardItem(player, respawnAtX, respawnAtY);
+        GameObject.FindObjectOfType<Player>().BombEffect();
+        Invoke(nameof(ResetRobots), 1);
+    }
+
+    private void ResetRobots()
+    {
         Robot[] robots = GameObject.FindObjectsOfType<Robot>();
         foreach (Robot robot in robots)
         {

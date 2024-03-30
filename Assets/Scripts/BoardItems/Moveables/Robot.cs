@@ -17,13 +17,6 @@ public class Robot : Moveable
         base.Start();
         ResetRobot();
         gameManager.AddRobotCount();
-        StartCoroutine(MoveRobotCoroutine());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     //Move Robot every X seconds
@@ -41,6 +34,7 @@ public class Robot : Moveable
             else
             {
                 StopCoroutine(MoveRobotCoroutine());
+                break;
             }
         }
     }
@@ -127,6 +121,7 @@ public class Robot : Moveable
         {
             moveInterval = 0.18f;
         }
+        StartCoroutine(MoveRobotCoroutine());
     }
 
     public override void DestroyItem()
