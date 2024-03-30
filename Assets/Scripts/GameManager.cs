@@ -54,8 +54,6 @@ public class GameManager : MonoBehaviour
     private AudioSource[] audioSources;
     private Dictionary<SoundEffect, AudioSource> soundEffectDictionary = new();
     public MusicSpeedController musicSpeedController;
-    private float sfxVolume;
-    private float bgmVolume;
 
     //Board size stuff
     public GameObject grid;
@@ -70,6 +68,8 @@ public class GameManager : MonoBehaviour
     private int respawnAtX;
     private int respawnAtY;
 
+    public RewardedAdsButton rewardedAdsButton;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -78,6 +78,8 @@ public class GameManager : MonoBehaviour
 
         audioSources = audioGameObject.GetComponents<AudioSource>();
         InitializeSoundEffects();
+
+        rewardedAdsButton = GameObject.Find("RewardedAds").GetComponent<RewardedAdsButton>();
 
         joystick = GameObject.Find("Joystick");
         buttons = GameObject.Find("ButtonHolder");
@@ -719,8 +721,10 @@ public class GameManager : MonoBehaviour
     {
         if (respawnAvailable)
         {
+            musicGameObject.GetComponent<AudioSource>().volume = 0;
             respawnAvailable = false;
-            respawnMenu.SetActive(true);            
+            respawnMenu.SetActive(true);
+            rewardedAdsButton.LoadAd();
         }
         else
         {
@@ -747,10 +751,19 @@ public class GameManager : MonoBehaviour
     //Watch Ad button calls this
     public void ContinuePlaying()
     {
+        if (PlayerPrefs.HasKey("bgmVolume"))
+        {
+            musicGameObject.GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("bgmVolume");
+        }
+        else
+        {
+            musicGameObject.GetComponent<AudioSource>().volume = 1;
+        }
         respawnMenu.SetActive(false);
         Invoke(nameof(RespawnPlayer), 1);
     }
 
+    //Skip Ad button calls this
     public void LoadEndScreen()
     {
         SceneManager.LoadScene("EndScreen");
