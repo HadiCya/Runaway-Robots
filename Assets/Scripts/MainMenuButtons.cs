@@ -27,6 +27,7 @@ public class MainMenuButtons : MonoBehaviour
     public GameObject dsaMenu;
     public TextMeshProUGUI dsaNotificationBox;
     public AudioSource ButtonClick;
+    public AudioSource menuMusic;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +39,15 @@ public class MainMenuButtons : MonoBehaviour
         infoMenu.SetActive(false);
         dsaMenu.SetActive(false);
         ButtonClick.time = 0.11f;
+
+        if (PlayerPrefs.HasKey("bgmVolume"))
+        {
+            menuMusic.volume = PlayerPrefs.GetFloat("bgmVolume");
+        }
+        if (PlayerPrefs.HasKey("sfxVolume"))
+        {
+            ButtonClick.volume = PlayerPrefs.GetFloat("sfxVolume");
+        }
     }
 
     // Update is called once per frame
@@ -186,11 +196,13 @@ public class MainMenuButtons : MonoBehaviour
     public void ChangeSFXVolume()
     {
         PlayerPrefs.SetFloat("sfxVolume", sfxVolumeSlider.value);
+        ButtonClick.volume = sfxVolumeSlider.value;
     }
 
     public void ChangeBGMVolume()
     {
         PlayerPrefs.SetFloat("bgmVolume", bgmVolumeSlider.value);
+        menuMusic.volume = bgmVolumeSlider.value;
     }
 
     public void ChangeMobileControls()
