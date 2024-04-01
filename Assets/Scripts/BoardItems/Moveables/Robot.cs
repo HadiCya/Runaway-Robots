@@ -15,8 +15,15 @@ public class Robot : Moveable
     // Start is called before the first frame update
     new void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        moveInterval = 0.5f - GameManager.levelCount * 0.015f;
+        if (moveInterval < 0.18f)
+        {
+            moveInterval = 0.18f;
+        }
         base.Start();
-        ResetRobot();
+        //ResetRobot();
         StartCoroutine(MoveRobotCoroutine());
         gameManager.AddRobotCount();
     }
@@ -30,9 +37,12 @@ public class Robot : Moveable
             {
                 yield return new WaitForSeconds(moveInterval);
                 //If player exists, move towards it
-                if (player = GameObject.FindGameObjectWithTag("Player"))
+                if (canMove)
                 {
-                    FindMoveDirection();
+                    if (player = GameObject.FindGameObjectWithTag("Player"))
+                    {
+                        FindMoveDirection();
+                    }
                 }
             }
             else
@@ -116,14 +126,7 @@ public class Robot : Moveable
     }
 
     public void ResetRobot()
-    {
-        player = GameObject.FindGameObjectWithTag("Player");
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        moveInterval = 0.5f - GameManager.levelCount * 0.015f;
-        if (moveInterval < 0.18f)
-        {
-            moveInterval = 0.18f;
-        }
+    {        
         AddDelay();
     }
 
