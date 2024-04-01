@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class MusicSpeedController : MonoBehaviour
 {
-    public float startingPitch = 0.85f; // normal speed
-    public float pitchIncrement = 0.05f; // pitch increment after a certain number of levels
-    public int levelThreshold = 2; // number of levels to complete before increasing speed
     private AudioSource audioSource;
+
+    public float startingPitch = 0.75f; // Starting slower than the normal speed
+    public float pitchMultiplier = 1.02f; // Multiplier for exponential growth (greater than 1)
+    public int levelThreshold = 2; // Increase pitch after every 'levelThreshold' levels 
 
     void Start()
     {
@@ -17,13 +18,13 @@ public class MusicSpeedController : MonoBehaviour
 
     public void UpdateMusicSpeed(int levelsCompleted)
     {
-        if (audioSource != null)
-        {
-            // Adjust pitch based on the number of levels completed and level threshold
-            audioSource.pitch = startingPitch + (pitchIncrement * (levelsCompleted / levelThreshold));
+        // Calculate the exponent based on the number of thresholds passed.
+        int thresholdsPassed = levelsCompleted / levelThreshold;
 
-            // Optional: clamp the pitch to prevent it from becoming too high or too low
-            audioSource.pitch = Mathf.Clamp(audioSource.pitch, 0.5f, 2.0f);
-        }
+        // Calculate new pitch with exponential growth based on thresholds passed.
+        float newPitch = startingPitch * Mathf.Pow(pitchMultiplier, thresholdsPassed);
+
+        // Clamp the new pitch value to prevent it from going too high or too low.
+        audioSource.pitch = Mathf.Clamp(newPitch, 0.5f, 2.0f);
     }
 }
