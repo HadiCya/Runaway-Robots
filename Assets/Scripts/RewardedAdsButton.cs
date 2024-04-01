@@ -26,7 +26,7 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
 #elif UNITY_ANDROID
         _adUnitId = _androidAdUnitId;
 #elif UNITY_EDITOR
-            _gameId = _androidGameId; //Only for testing the functionality in the Editor
+        _adUnitID = _androidAdUnitId;
 #endif
 
         // Disable the button until the ad is ready to show:
