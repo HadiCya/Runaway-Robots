@@ -742,7 +742,7 @@ public class GameManager : MonoBehaviour
         }
         PlaceBoardItem(player, respawnAtX, respawnAtY);
         GameObject.FindObjectOfType<Player>().BombEffect();
-        Invoke(nameof(ResetRobots), 1);
+        ResetRobots();
     }
 
     private void ResetRobots()

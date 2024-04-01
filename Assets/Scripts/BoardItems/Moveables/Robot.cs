@@ -10,6 +10,7 @@ public class Robot : Moveable
     private float xDistance;
     private float yDistance;
     private float moveInterval = 0.5f;
+    private bool canMove = true;
 
     // Start is called before the first frame update
     new void Start()
@@ -25,11 +26,18 @@ public class Robot : Moveable
     {
         while (true)
         {
-            yield return new WaitForSeconds(moveInterval);
-            //If player exists, move towards it
-            if (player = GameObject.FindGameObjectWithTag("Player"))
+            if (canMove)
             {
-                FindMoveDirection();
+                yield return new WaitForSeconds(moveInterval);
+                //If player exists, move towards it
+                if (player = GameObject.FindGameObjectWithTag("Player"))
+                {
+                    FindMoveDirection();
+                }
+            }
+            else
+            {
+                break;
             }
         }
     }
@@ -116,6 +124,19 @@ public class Robot : Moveable
         {
             moveInterval = 0.18f;
         }
+        AddDelay();
+    }
+
+    public void AddDelay()
+    {
+        canMove = false;
+        Invoke(nameof(RemoveDelay), 1);
+    }
+
+    public void RemoveDelay()
+    {
+        canMove = true;
+        StartCoroutine(MoveRobotCoroutine());
     }
 
     public override void DestroyItem()
