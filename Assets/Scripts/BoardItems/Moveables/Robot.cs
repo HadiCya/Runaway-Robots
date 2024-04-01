@@ -16,6 +16,7 @@ public class Robot : Moveable
     {
         base.Start();
         ResetRobot();
+        StartCoroutine(MoveRobotCoroutine());
         gameManager.AddRobotCount();
     }
 
@@ -29,12 +30,6 @@ public class Robot : Moveable
             if (player = GameObject.FindGameObjectWithTag("Player"))
             {
                 FindMoveDirection();
-            }
-            //If player no longer exists, stop moving
-            else
-            {
-                StopCoroutine(MoveRobotCoroutine());
-                break;
             }
         }
     }
@@ -121,7 +116,6 @@ public class Robot : Moveable
         {
             moveInterval = 0.18f;
         }
-        StartCoroutine(MoveRobotCoroutine());
     }
 
     public override void DestroyItem()
