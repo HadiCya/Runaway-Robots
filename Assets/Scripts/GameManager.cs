@@ -329,24 +329,17 @@ public class GameManager : MonoBehaviour
             //If moving into a Robot or Pit: die
             else if ((gameBoard[item2X, item2Y].type == "robot") || (gameBoard[item2X, item2Y].type == "pit"))
             {
-                //End game
-                PlaySound(SoundEffect.deathSound);
-                respawnAtX = item1X;
-                respawnAtY = item1Y;
-                Invoke(nameof(DetermineEndPath), 1);
+
+                KillPlayer(item1X, item1Y);
                 return 2;
             }
             //If moving into an Electric Fence: die and destroy the fence
             else if (gameBoard[item2X, item2Y].type == "electric_fence")
             {
-                PlaySound(SoundEffect.electricSound);
-                PlaySound(SoundEffect.deathSound);
-                //Destroy other item collided with
+                PlaySound(SoundEffect.electricSound);               
                 gameBoard[item2X, item2Y].DestroyItem();
-                //End game
-                respawnAtX = item1X;
-                respawnAtY = item1Y;
-                Invoke(nameof(DetermineEndPath), 1);
+              
+                KillPlayer(item1X, item1Y);
                 return 4;
             }
         }
@@ -366,13 +359,10 @@ public class GameManager : MonoBehaviour
             //If moving into the Player: kill them
             else if (gameBoard[item2X, item2Y].type == "player")
             {
-                PlaySound(SoundEffect.deathSound);
-                //Destroy other item collided with
-                gameBoard[item2X, item2Y].DestroyItem();
-                //End game
-                respawnAtX = item2X;
-                respawnAtY = item2Y;
-                Invoke(nameof(DetermineEndPath), 1);
+                
+                gameBoard[item2X, item2Y].DestroyItem();                
+                KillPlayer(item2X, item2Y);
+
                 return 3;
             }
             //If moving into an Electric Fence, die and destroy the fence
@@ -391,6 +381,15 @@ public class GameManager : MonoBehaviour
         //No obstacle to collide with, so move along
         return 1;
     }
+
+    // Ends the Game
+    private void KillPlayer(int respawnX, int respawnY) {
+        PlaySound(SoundEffect.deathSound);
+        respawnAtX = respawnX;
+        respawnAtY = respawnY;
+        Invoke(nameof(DetermineEndPath), 1);
+    }
+
 
     //ALSO DEPRECATED
     //Check if the indicated position is empty (for bombs)
@@ -717,7 +716,9 @@ public class GameManager : MonoBehaviour
 
     private void DetermineEndPath()
     {
-        if (respawnAvailable)
+        float rng = UnityEngine.Random.Range(0,100);
+
+        if (respawnAvailable && rng <= 40)
         {
             musicGameObject.GetComponent<AudioSource>().volume = 0;
             respawnAvailable = false;
