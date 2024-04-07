@@ -31,6 +31,7 @@ public class BombButton : MonoBehaviour
     {
         if (gameManager != null && gameManager.CanUseBomb())
         {
+            player.BombEffect();
             gameManager.SpawnBombs(player.xPos, player.yPos);
         }
     }
