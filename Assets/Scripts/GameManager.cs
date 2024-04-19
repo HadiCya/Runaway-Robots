@@ -97,6 +97,11 @@ public class GameManager : MonoBehaviour
             joystick.SetActive(false);
         }
 
+#if PLATFORM_STANDALONE_WIN
+        buttons.SetActive(false);
+        joystick.SetActive(false);
+#endif
+
         bombUiImage = GameObject.Find("Canvas").transform.GetChild(0).GetComponent<UnityEngine.UI.Image>();
         bombCountText = GameObject.Find("Canvas").transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         levelCompleteText = GameObject.Find("Canvas").transform.GetChild(2).GetComponent<TextMeshProUGUI>();
