@@ -716,6 +716,12 @@ public class GameManager : MonoBehaviour
 
     private void DetermineEndPath()
     {
+#if PLATFORM_STANDALONE_WIN
+        respawnAvailable = false;
+#elif UNITY_EDITOR
+        respawnAvailable = false;
+#endif
+
         float rng = UnityEngine.Random.Range(0,100);
 
         if (respawnAvailable && rng <= 40)
