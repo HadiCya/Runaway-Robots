@@ -752,6 +752,15 @@ public class GameManager : MonoBehaviour
             robot.ResetRobot();
         }
     }
+    
+    public void ActivateRobots()
+    {
+        Robot[] robots = GameObject.FindObjectsOfType<Robot>();
+        foreach (Robot robot in robots)
+        {
+            robot.ActivateRobot();
+        }
+    }
 
     //Watch Ad button calls this
     public void ContinuePlaying()

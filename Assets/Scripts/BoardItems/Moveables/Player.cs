@@ -36,6 +36,8 @@ public class Player : Moveable
 
     private int frameCount = 0;
 
+    private bool firstMove = false;
+
     new void Start()
     {
         base.Start();
@@ -284,6 +286,12 @@ public class Player : Moveable
     {
         if (!movementDisabled)
         {
+            if (!firstMove)
+            {
+                firstMove = true;
+                gameManager.ActivateRobots();
+            }
+
             base.MoveItem(xMove, yMove);
 
             if (base.collisionResult == 1 || base.collisionResult == 3)
