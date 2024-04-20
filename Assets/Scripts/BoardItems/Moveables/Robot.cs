@@ -9,15 +9,15 @@ public class Robot : Moveable
     private GameObject player;
     private float xDistance;
     private float yDistance;
-    private float moveInterval = 0.5f;
-    private bool canMove = true;
+    private float moveInterval = 0.75f;
+    private bool canMove = false;
 
     // Start is called before the first frame update
     new void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        moveInterval = 0.5f - GameManager.levelCount * 0.015f;
+        moveInterval = 0.75f - GameManager.levelCount * 0.015f;
         if (moveInterval < 0.18f)
         {
             moveInterval = 0.18f;
@@ -123,6 +123,12 @@ public class Robot : Moveable
             MoveItem(0, 1);
             return;
         }
+    }
+
+    public void ActivateRobot()
+    {
+        canMove = true;
+        StartCoroutine(MoveRobotCoroutine());
     }
 
     public void ResetRobot()
